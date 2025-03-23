@@ -11,6 +11,9 @@ function LandingPage() {
           Welcome to EasyTrip
         </h1>
         <p className="text-xl text-gray-600">Enjoy exploring this page.</p>
+        <button onClick={()=>{
+          console.log("clicked!");
+        }}></button>
       </div>
     </div>
   );
