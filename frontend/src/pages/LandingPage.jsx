@@ -179,6 +179,8 @@ function LandingPage() {
           console.log("clicked!");
         }}></button>
 
+        <input placeholder="Where do you want to go?"></input>
+
         <div className="max-w-6xl mx-auto">
           {/* Destinations Section */}
           <h2 className="text-2xl font-bold text-center mt-120">Explore trending locations loved by our travelers</h2>
