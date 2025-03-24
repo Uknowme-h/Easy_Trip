@@ -72,10 +72,15 @@ const AgentCard = ({ name, role, imgUrl }) => {
 };
 
 // Guesthouse Card Component
-const GuesthouseCard = ({ name, location, price }) => {
+const GuesthouseCard = ({ name, location, price, image }) => {
   return (
     <div className="bg-[#e2eec9] p-4 rounded-lg">
-      <h3 className="font-bold mb-1 mt-30">{name}</h3>
+      <img 
+        src={image} 
+        alt={name} 
+        className="w-full h-50 object-cover rounded-t-xl"
+      />
+      <h3 className="font-bold mb-1 mt-8">{name}</h3>
       <p className="text-sm mb-3">{location}</p>
       <div className="flex justify-between items-center">
         <button 
@@ -146,10 +151,10 @@ function LandingPage() {
 
   // Guesthouses data
   const guesthouses = [
-    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' },
-    { name: 'Lakeside Heaven', location: 'Pokhara, Nepal', price: '30' },
-    { name: 'Himalayan Rest', location: 'Pokhara, Nepal', price: '30' },
-    { name: 'Pokhara Lodge', location: 'Pokhara, Nepal', price: '30' }
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30',image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/128841895.jpg?k=9a833036143d0d893018173cbe865a80e8045ffc5f4ab1db0cdb8852e259dae1&o=&hp=1" },
+    { name: 'Lakeside Heaven', location: 'Pokhara, Nepal', price: '30', image: "https://www.holidify.com/images/cmsuploads/compressed/pokhara-1699787_1280_20180629193006.jpg" },
+    { name: 'Himalayan Rest', location: 'Pokhara, Nepal', price: '30', image: "https://q-xx.bstatic.com/xdata/images/hotel/max500/500977149.jpg?k=982516cb811b990d825d36164438912c443e0f14be645c169286b4f90f9ea69e&o=" },
+    { name: 'Pokhara Lodge', location: 'Pokhara, Nepal', price: '30', image: "https://www.regenerativetravel.com/wp-content/uploads/2023/05/Lodge-Exterior-Terrace-View-Main-Lodge-2-1024x683.jpg" }
   ];
 
   return (
@@ -179,7 +184,7 @@ function LandingPage() {
           console.log("clicked!");
         }}></button>
 
-        <input placeholder="Where do you want to go?"></input>
+        <input placeholder="Where do you want to go"></input>
 
         <div className="max-w-6xl mx-auto">
           {/* Destinations Section */}
@@ -246,6 +251,7 @@ function LandingPage() {
                 name={guesthouse.name}
                 location={guesthouse.location}
                 price={guesthouse.price}
+                image={guesthouse.image}
               />
             ))}
           </div>
@@ -297,9 +303,15 @@ function LandingPage() {
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-2xl">Facebook</a>
-              <a href="#" className="text-2xl">Insta</a>
-              <a href="#" className="text-2xl">Twitter</a>
+              <a href="#" className="text-2xl">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" className="w-8 h-8" />
+              </a>
+              <a href="#" className="text-2xl">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" className="w-8 h-8" />
+              </a>
+              <a href="#" className="text-2xl">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png" alt="Twitter" className="w-8 h-8" />
+              </a>
             </div>
           </div>
         </div>
