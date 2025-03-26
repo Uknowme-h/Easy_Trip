@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import SearchBox from "./Searchbox";
 
 // Travel Card Component
 const TravelCard = ({ location, country, price, nights }) => {
@@ -159,36 +160,36 @@ function LandingPage() {
 
   return (
     <div className="font-sans min-h-screen w-full bg-gray-50 overflow-x-hidden"
-    style={{
-      backgroundImage: "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JlZW4lMjB0cmF2ZWx8ZW58MHx8MHx8fDA%3D')", // Ensure the correct path
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      backgroundAttachment: "scroll",
-      //minHeight: "100vh",
-      height: "25vh",
-      // width: "100%"
-
-    }}
-    
     >
       <Navbar />
+      <SearchBox />
+
+      {/* Hero Image */}
+      <div className="relative w-full flex justify-center items-center h-[600px] overflow-hidden mb-8">
+        <div className="relative w-[1150px] h-full overflow-hidden rounded-3xl">
+          {/* Text Overlay */}
+          <div className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full px-4">
+            <h1 className="text-5xl font-bold mb-4 drop-shadow-lg">Discover Your Next Adventure</h1>
+            <p className="text-xl mb-6 drop-shadow-md">Explore the world with EasyTrip - Your Journey Starts Here</p>
+          </div>
+          
+          {/* Darken overlay */}
+          <div className="absolute inset-0 bg-black opacity-40 z-[5]"></div>
+          
+          {/* Centered Image */}
+          <img 
+            src="https://media.istockphoto.com/id/1413827915/photo/boat-hut-on-braies-lake-with-seekofel-mount-on-background-colorful-autumn-sunrise-of-italian.jpg?s=612x612&w=0&k=20&c=0sffNo0wMjxumgGYF18ImdiCUCIBMsRD2BieKYpL7M8=" 
+            alt="Travel destination" 
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        </div>
+      </div>
       
-      {/* Welcome Section */}
-      <div className="p-6 md:p-12 lg:p-20">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Welcome to EasyTrip
-        </h1>
-        <p className="text-xl text-gray-600 mb-6">Enjoy exploring this page.</p>
-        <button onClick={() => {
-          console.log("clicked!");
-        }}></button>
 
-        <input placeholder="Where do you want to go"></input>
-
+      <div className="p-6 md:p-12 lg:p-20"> 
         <div className="max-w-6xl mx-auto">
           {/* Destinations Section */}
-          <h2 className="text-2xl font-bold text-center mt-120">Explore trending locations loved by our travelers</h2>
+          <h2 className="text-2xl font-bold text-center mt-10">Explore trending locations loved by our travelers</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-30 mt-14">
             {destinations.map((dest, index) => (
