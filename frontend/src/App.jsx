@@ -53,7 +53,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-        <Route path="/landingpage" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route
           path="/login"
           element={
@@ -81,8 +81,7 @@ function App() {
           }
         />
         {/* catch all routes */}
-        <Route path="*" element={<Navigate to="/landingpage" replace />} />
-        <Route path="/landingpage" element={<LandingPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <Toaster />
