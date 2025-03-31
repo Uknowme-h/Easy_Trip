@@ -89,6 +89,7 @@ function App() {
         />
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/landingpage" replace />} />
+        <Route path="/landingpage" element={<LandingPage />} />
       </Routes>
 
       <Toaster />
