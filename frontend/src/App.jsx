@@ -53,14 +53,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-        <Route
-          path="/landingpage"
-          element={
-            <RedirectAuthenticatedUser>
-              <LandingPage />
-            </RedirectAuthenticatedUser>
-          }
-        />
+        <Route path="/landingpage" element={<LandingPage />} />
         <Route
           path="/login"
           element={
