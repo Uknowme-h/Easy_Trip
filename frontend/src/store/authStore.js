@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 
 
-const API_URL = import.meta.env.MODE === "development" ? "http://20.55.20.86:5000/api/auth" : "/api/auth";
+const API_URL = import.meta.env.MODE === "development" ? "http://20.55.20.86:5000/api/auth" : "http://20.55.20.86:5000/api/auth/api/auth";
 const CLOUD_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/upload" : "/api/upload";
 
 
