@@ -1,20 +1,91 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import SearchBox from "./Searchbox";
+import SearchBox from "./SearchBox";
 
 // Travel Card Component
 const TravelCard = ({ location, country, price, nights }) => {
   return (
-    <div className="bg-[#e2eec9] p-4 rounded-lg">
-      <h3 className="font-bold">{location}, {country}</h3>
-      <p className="text-sm mb-2">From ${price} · {nights} nights</p>
-      <button 
-        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-sm rounded transition-colors duration-200"
-        onClick={() => console.log(`View details clicked for ${location}, ${country}`)}
-      >
-        View Details
-      </button>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-4">
+        <h3 className="font-bold">{location}, {country}</h3>
+        <p className="text-sm mb-2">From ${price} · {nights} nights</p>
+        <button 
+          className="bg-[#333333] hover:bg-black text-white px-3 py-1 text-sm rounded transition-colors duration-200"
+          onClick={() => console.log(`View details clicked for ${location}, ${country}`)}
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Travel Agent Card Component
+const AgentCard = ({ name, role }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-4">
+      <div className="flex justify-center mb-3">
+        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
+          <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+      <h3 className="font-bold text-center">{name}</h3>
+      <p className="text-sm mb-3 text-center">{role}</p>
+      <div className="flex justify-center space-x-2">
+        <button 
+          className="bg-[#333333] hover:bg-black text-white px-3 py-1 text-sm rounded transition-colors duration-200"
+          onClick={() => console.log(`Contact clicked for ${name}`)}
+        >
+          Contact
+        </button>
+        <button 
+          className="bg-transparent hover:bg-gray-100 border border-[#333333] text-[#333333] px-3 py-1 text-sm rounded transition-colors duration-200"
+          onClick={() => console.log(`View profile clicked for ${name}`)}
+        >
+          View Profile
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Guesthouse Card Component
+const GuesthouseCard = ({ name, location, price }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <img 
+        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+        alt={name} 
+        className="w-full h-40 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="font-bold mb-1">{name}</h3>
+        <p className="text-sm mb-3">{location}</p>
+        <div className="flex justify-between items-center">
+          <button 
+            className="bg-[#333333] hover:bg-black text-white px-3 py-1 text-sm rounded transition-colors duration-200"
+            onClick={() => console.log(`Book Now clicked for ${name}`)}
+          >
+            Book Now
+          </button>
+          <span className="text-sm">${price}/night</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Testimonial Card Component
+const TestimonialCard = ({ name, title, review }) => {
+  return (
+    <div className="bg-[#333333] text-white p-6 rounded-lg">
+      <p className="text-sm mb-2">{name}</p>
+      <h3 className="font-bold mb-2">{title}</h3>
+      <p className="text-sm">{review}</p>
     </div>
   );
 };
@@ -29,82 +100,16 @@ const FeatureItem = ({ title, description }) => {
   );
 };
 
-// Testimonial Card Component
-const TestimonialCard = ({ name, title, review }) => {
-  return (
-    <div className="bg-[#e2eec9] p-4 rounded-lg">
-      <p className="text-sm mb-2">{name}</p>
-      <h3 className="font-bold mb-2">{title}</h3>
-      <p className="text-sm">{review}</p>
-    </div>
-  );
-};
-
-// Travel Agent Card Component
-const AgentCard = ({ name, role, imgUrl }) => {
-  return (
-    <div className="bg-[#e2eec9] p-4 rounded-lg text-center">
-      <div className="flex justify-center mb-3">
-        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
-          <svg className="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-      </div>
-      <h3 className="font-bold">{name}</h3>
-      <p className="text-sm mb-3">{role}</p>
-      <div className="flex justify-center space-x-2">
-        <button 
-          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-sm rounded transition-colors duration-200"
-          onClick={() => console.log(`Contact clicked for ${name}, ${role}`)}
-        >
-          Contact
-        </button>
-        <button 
-          className="bg-transparent hover:bg-green-100 border border-green-600 text-green-600 px-3 py-1 text-sm rounded transition-colors duration-200"
-          onClick={() => console.log(`View profile clicked for ${name}, ${role}`)}
-        >
-          View Profile
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Guesthouse Card Component
-const GuesthouseCard = ({ name, location, price, image }) => {
-  return (
-    <div className="bg-[#e2eec9] p-4 rounded-lg">
-      <img 
-        src={image} 
-        alt={name} 
-        className="w-full h-50 object-cover rounded-t-xl"
-      />
-      <h3 className="font-bold mb-1 mt-8">{name}</h3>
-      <p className="text-sm mb-3">{location}</p>
-      <div className="flex justify-between items-center">
-        <button 
-          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-sm rounded transition-colors duration-200"
-          onClick={() => console.log(`Book Now clicked for ${name} in ${location}`)}
-        >
-          Book Now
-        </button>
-        <span className="text-sm">${price}/night</span>
-      </div>
-    </div>
-  );
-};
-
 function LandingPage() {
   const navigate = useNavigate();
   
   // Destinations data
   const destinations = [
     { location: 'Lakeside', country: 'Pokhara', price: '899', nights: '7' },
-    { location: 'Paris', country: 'France', price: '1,099', nights: '5' },
-    { location: 'Tokyo', country: 'Japan', price: '1,289', nights: '6' },
-    { location: 'New York', country: 'USA', price: '1,199', nights: '4' }
+    { location: 'Lakeside', country: 'Pokhara', price: '899', nights: '7' },
+    { location: 'Lakeside', country: 'Pokhara', price: '899', nights: '7' },
+    { location: 'Lakeside', country: 'Pokhara', price: '899', nights: '7' },
+    { location: 'Lakeside', country: 'Pokhara', price: '899', nights: '7' }
   ];
 
   // Features data
@@ -128,70 +133,75 @@ function LandingPage() {
     {
       name: 'Prajen Shrestha',
       title: 'Amazing, Experience',
-      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and experience.'
+      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and user experiences.'
     },
     {
       name: 'Prajen Shrestha',
       title: 'Amazing, Experience',
-      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and experience.'
+      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and user experiences.'
     },
     {
       name: 'Prajen Shrestha',
       title: 'Amazing, Experience',
-      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and experience.'
+      review: 'I\'ve used many travel site but the EasyTrip offers the best combination of deals and user experiences.'
     }
   ];
 
   // Travel agents data
   const agents = [
     { name: 'Lakpa Sherpa', role: 'Trekking Expert' },
-    { name: 'Nema Rai', role: 'Adventure Guide' },
-    { name: 'Santosh Basnet', role: 'Cultural Expert' },
-    { name: 'Bijay Tamang', role: 'Mountain Guide' }
+    { name: 'Lakpa Sherpa', role: 'Trekking Expert' },
+    { name: 'Lakpa Sherpa', role: 'Trekking Expert' },
+    { name: 'Lakpa Sherpa', role: 'Trekking Expert' },
+    { name: 'Lakpa Sherpa', role: 'Trekking Expert' }
   ];
 
   // Guesthouses data
   const guesthouses = [
-    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30',image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/128841895.jpg?k=9a833036143d0d893018173cbe865a80e8045ffc5f4ab1db0cdb8852e259dae1&o=&hp=1" },
-    { name: 'Lakeside Heaven', location: 'Pokhara, Nepal', price: '30', image: "https://www.holidify.com/images/cmsuploads/compressed/pokhara-1699787_1280_20180629193006.jpg" },
-    { name: 'Himalayan Rest', location: 'Pokhara, Nepal', price: '30', image: "https://q-xx.bstatic.com/xdata/images/hotel/max500/500977149.jpg?k=982516cb811b990d825d36164438912c443e0f14be645c169286b4f90f9ea69e&o=" },
-    { name: 'Pokhara Lodge', location: 'Pokhara, Nepal', price: '30', image: "https://www.regenerativetravel.com/wp-content/uploads/2023/05/Lodge-Exterior-Terrace-View-Main-Lodge-2-1024x683.jpg" }
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' },
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' },
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' },
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' },
+    { name: 'Mountain view Lodge', location: 'Pokhara, Nepal', price: '30' }
   ];
 
   return (
-    <div className="font-sans min-h-screen w-full bg-gray-50 overflow-x-hidden"
-    >
+    <div className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden">
       <Navbar />
-      <SearchBox />
-
-      {/* Hero Image */}
-      <div className="relative w-full flex justify-center items-center h-[600px] overflow-hidden mb-8">
-        <div className="relative w-[1150px] h-full overflow-hidden rounded-3xl">
-          {/* Text Overlay */}
-          <div className="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full px-4">
-            <h1 className="text-5xl font-bold mb-4 drop-shadow-lg">Discover Your Next Adventure</h1>
-            <p className="text-xl mb-6 drop-shadow-md">Explore the world with EasyTrip - Your Journey Starts Here</p>
+      
+    {/* Hero Image with Search Box */}
+      <div className="relative w-full h-[600px] overflow-hidden">
+     {/* Search box positioned above the hero image content */}
+       <div className="absolute top-1/9 left-0 right-0 z-10 flex justify-center">
+          <div className="w-full max-w-md">
+           <SearchBox />
           </div>
+        </div>
+        <img 
+          src="https://wallpaperaccess.com/full/1812893.jpg" 
+          alt="Mountain landscape" 
+          className="absolute w-full h-full object-cover"
+        />
+        
+        {/* Overlay with gradient */}
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        
+        {/* Center content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 uppercase tracking-wider text-yellow-400">Explore with us</h1>
+          <p className="text-lg md:text-xl mb-10 uppercase tracking-wide">Effortless travel and endless adventures</p>
+          <p className="text-sm text-yellow-400">by EASYTRIP</p>
           
-          {/* Darken overlay */}
-          <div className="absolute inset-0 bg-black opacity-40 z-[5]"></div>
-          
-          {/* Centered Image */}
-          <img 
-            src="https://media.istockphoto.com/id/1413827915/photo/boat-hut-on-braies-lake-with-seekofel-mount-on-background-colorful-autumn-sunrise-of-italian.jpg?s=612x612&w=0&k=20&c=0sffNo0wMjxumgGYF18ImdiCUCIBMsRD2BieKYpL7M8=" 
-            alt="Travel destination" 
-            className="absolute top-0 left-0 w-full h-full object-cover"
-          />
+        
         </div>
       </div>
-      
 
-      <div className="p-6 md:p-12 lg:p-20"> 
-        <div className="max-w-6xl mx-auto">
-          {/* Destinations Section */}
-          <h2 className="text-2xl font-bold text-center mt-10">Explore trending locations loved by our travelers</h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-30 mt-14">
+      {/* Main Content */}
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10 pt-20">
+        {/* Destinations Section */}
+        <section className="mb-16">
+          <h2 className="text-xl font-medium text-center mb-8">Explore trending locations loved by our travelers</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {destinations.map((dest, index) => (
               <TravelCard 
                 key={index}
@@ -202,25 +212,126 @@ function LandingPage() {
               />
             ))}
           </div>
+          <div className="text-right mt-2">
+            <button 
+              className="text-blue-600 hover:text-gray-800 text-sm"
+              onClick={() => console.log("View all destinations clicked")}
+            >
+              View All »
+            </button>
+          </div>
+        </section>
+
+        {/* Travel Agents Section */}
+        <section className="mb-16">
+          <h2 className="text-xl font-medium text-center mb-8">Our Travel Agents</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {agents.map((agent, index) => (
+              <AgentCard 
+                key={index}
+                name={agent.name}
+                role={agent.role}
+              />
+            ))}
+          </div>
+          <div className="text-right mt-2">
+            <button 
+              className="text-blue-600 hover:text-gray-800 text-sm"
+              onClick={() => console.log("View all agents clicked")}
+            >
+              View All »
+            </button>
+          </div>
+        </section>
+
+        {/* Guesthouses Section */}
+        <section className="mb-16">
+          <h2 className="text-xl font-medium text-center mb-8">Our Popular Guesthouses</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {guesthouses.map((guesthouse, index) => (
+              <GuesthouseCard 
+                key={index}
+                name={guesthouse.name}
+                location={guesthouse.location}
+                price={guesthouse.price}
+              />
+            ))}
+          </div>
+          <div className="text-right mt-2">
+            <button 
+              className="text-blue-600 hover:text-gray-800 text-sm"
+              onClick={() => console.log("View all guesthouses clicked")}
+            >
+              View All »
+            </button>
+          </div>
+        </section>
+
+        {/* Why Choose EasyTrip Section */}
+        <section className="mb-16">
+          <h2 className="text-xl font-medium text-center mb-8">Why Choose EasyTrip</h2>
           
-          {/* Features Section */}
-          <div className="bg-[#e2eec9] p-6 rounded-lg mt-13 mb-12">
-            <h2 className="text-center font-bold text-2xl mb-10">Why Choose EasyTrip</h2>
+          {/* First Feature Box with Image */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-8">
+            <div className="bg-[#333333] text-white p-8 rounded-lg h-[350px]">
+              <h3 className="text-2xl font-bold text-yellow-400 mb-6">EASYTRIP MAKES IT POSSIBLE</h3>
+              
+              <div className="space-y-3">
+                <div>
+                  <h4 className="font-bold">Fast & Secure Booking</h4>
+                  <p className="text-sm">Book with confidence using our secure payment system and instant confirmation.</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-bold">Exclusive Member Discounts</h4>
+                  <p className="text-sm">Sign up today and unlock special savings on hotels, flights, and more.</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-bold">Eco-Friendly Travel</h4>
+                  <p className="text-sm">Book with confidence knowing we partner with sustainable and responsible travel providers.</p>
+                </div>
+              </div>
+            </div>
             
-            <div className="max-w-lg mx-auto">
-              {features.map((feature, index) => (
-                <FeatureItem 
-                  key={index}
-                  title={feature.title} 
-                  description={feature.description} 
-                />
-              ))}
+            <div className="h-[350px] rounded-lg overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Luxury accommodation" 
+                className="w-full h-full object-cover rounded-lg"
+              />
             </div>
           </div>
+          
+          {/* Second Feature Box with Image */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div className="h-[350px] rounded-lg overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Luxury villa" 
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+            
+            <div className="bg-[#333333] text-white p-8 rounded-lg">
+              <h3 className="text-2xl font-bold text-yellow-400 mb-6">EASYTRIP MAKES IT POSSIBLE</h3>
+              
+              <div className="space-y-3">
+                {features.map((feature, index) => (
+                  <div key={index}>
+                    <h4 className="font-bold">{feature.title}</h4>
+                    <p className="text-sm">{feature.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-          {/* Testimonials Section */}
-          <h2 className="text-2xl font-bold text-center my-8 mt-28">What our Travelers Say</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        {/* Testimonials Section */}
+        <section className="mb-16">
+          <h2 className="text-xl font-medium text-center mb-8">What our Travelers Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border border-blue-200 rounded-lg overflow-hidden">
             {testimonials.map((testimonial, index) => (
               <TestimonialCard 
                 key={index}
@@ -230,95 +341,75 @@ function LandingPage() {
               />
             ))}
           </div>
+        </section>
 
-          {/* Travel Agents Section */}
-          <h2 className="text-2xl font-bold text-center my-8 mt-28">Our Travel Agents</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            {agents.map((agent, index) => (
-              <AgentCard 
-                key={index}
-                name={agent.name}
-                role={agent.role}
-              />
-            ))}
-          </div>
-
-          {/* Guesthouses Section */}
-          <h2 className="text-2xl font-bold text-center my-8 mt-28">Our Popular Guesthouses</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            {guesthouses.map((guesthouse, index) => (
-              <GuesthouseCard 
-                key={index}
-                name={guesthouse.name}
-                location={guesthouse.location}
-                price={guesthouse.price}
-                image={guesthouse.image}
-              />
-            ))}
-          </div>
-
-          {/* CTA Section */}
-          <div className="bg-[#e2eec9] p-8 rounded-lg text-center mb-12 mt-28">
-            <h2 className="text-2xl font-bold mb-4">Ready to start your journey?</h2>
-            <p className="mb-6">Join thousands of satisfied travelers who book with easy trip everyday</p>
-            <button className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-            onClick={() => navigate("/signup")}>SignUp Now</button>
-             
-          </div>
-        </div>
+        {/* CTA Section */}
+        <section className="mb-16 bg-[#333333] text-white p-8 rounded-lg text-center">
+          <h2 className="text-xl text-yellow-400 font-bold mb-4 uppercase">Ready to start your journey?</h2>
+          <p className="mb-6">Join thousands of satisfied travelers who book with easy trip everyday</p>
+          <button 
+            className="bg-yellow-400 hover:bg-yellow-500 text-[#333333] font-bold px-6 py-2 rounded-full transition-colors duration-200"
+            onClick={() => navigate("/signup")}
+          >
+            SignUp Now
+          </button>
+        </section>
       </div>
 
       {/* Footer Section */}
-      <footer className="bg-green-800 text-white p-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-xl font-bold mb-4">EasyTrip</h3>
-            <p className="text-sm">Making travel planning simple and accessible for everyone in Nepal.</p>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm hover:text-green-500 transition-colors duration-200">About Us</a></li>
-              <li><a href="#" className="text-sm hover:text-green-500 transition-colors duration-200">Guesthouses</a></li>
-              <li><a href="#" className="text-sm hover:text-green-500 transition-colors duration-200">Bus Tickets</a></li>
-              <li><a href="#" className="text-sm hover:text-green-500 transition-colors duration-200">Travel Guides</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-            <ul className="space-y-2">
-              <li className="text-sm flex items-center">
-                <span className="mr-2">📞</span> +977 1234567890
-              </li>
-              <li className="text-sm flex items-center">
-                <span className="mr-2">✉️</span> info@easytrip.com
-              </li>
-              <li className="text-sm flex items-center">
-                <span className="mr-2">📍</span> Pokhara, Nepal
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
-              <a href="#" className="text-2xl">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" className="w-8 h-8" />
-              </a>
-              <a href="#" className="text-2xl">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" className="w-8 h-8" />
-              </a>
-              <a href="#" className="text-2xl">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png" alt="Twitter" className="w-8 h-8" />
-              </a>
+      <footer className="bg-[#333333] text-white p-8">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-7 mb-6 px-35">
+            <div>
+              <h3 className="text-x text-yellow-400 font-bold mb-2">EasyTrip</h3>
+              <p className="text-sm">Making travel planning simple and accessible for everyone in Nepal.</p>
+            </div>
+            
+            <div>
+              <h3 className="text-x text-yellow-400 font-bold mb-2">Quick Links</h3>
+              <ul className="space-y-1">
+                <li><a href="#" className="text-sm hover:text-yellow-400 transition-colors duration-200">About Us</a></li>
+                <li><a href="#" className="text-sm hover:text-yellow-400 transition-colors duration-200">Guesthouses</a></li>
+                <li><a href="#" className="text-sm hover:text-yellow-400 transition-colors duration-200">Bus Tickets</a></li>
+                <li><a href="#" className="text-sm hover:text-yellow-400 transition-colors duration-200">Travel Guides</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-x text-yellow-400 font-bold mb-2">Contact Us</h3>
+              <ul className="space-y-1">
+                <li className="text-sm flex items-center">
+                  <span className="mr-2">📞</span> +977 1234567890
+                </li>
+                <li className="text-sm flex items-center">
+                  <span className="mr-2">✉️</span> info@easytrip.com
+                </li>
+                <li className="text-sm flex items-center">
+                  <span className="mr-2">📍</span> Pokhara, Nepal
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-x text-yellow-400 font-bold mb-2">Follow Us</h3>
+              <div className="flex space-x-4">
+                <a href="#" className="hover:opacity-80 transition-opacity duration-200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" className="w-5 h-5" />
+                  
+                </a>
+                <a href="#" className="hover:opacity-80 transition-opacity duration-200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" className="w-5 h-5" /> 
+                </a>
+                <a href="#" className="hover:opacity-80 transition-opacity duration-200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png" alt="Twitter" className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <div className="border-t border-green-700 mt-8 pt-8 text-center text-sm">
-          &copy; 2025 EasyTrip. All rights reserved
+          
+          <div className="border-t border-white-700 pt-4 text-center text-sm">
+            <span>© EasyTrip Nepal · 2025</span>
+          </div>
         </div>
       </footer>
     </div>

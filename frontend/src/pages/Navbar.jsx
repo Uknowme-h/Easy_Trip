@@ -42,44 +42,44 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 bg-white z-10 transition-shadow ${
+        className={`fixed top-0 left-0 right-0 bg-[#333333] z-10 transition-shadow ${
           scrolled ? "shadow-md" : ""
         }`}
       >
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div
-            className="text-xl font-bold text-blue-600 cursor-pointer"
+            className="text-xl font-bold text-yellow-600 cursor-pointer"
             onClick={() => navigate("/")}
           >
             EasyTrip
           </div>
-          <div className="space-x-4">
+          <div className="space-x-4 ">
             <button
-              className="px-4 py-2 text-black  rounded hover:bg-blue-50 transition-colors"
+              className="px-4 py-2 text-white  hover:text-yellow-400 transition-colors "
               onClick={() => navigate("/login")}
             >
               GuestHouses
             </button>
             <button
-              className="px-4 py-2 text-black  rounded hover:bg-blue-50 transition-colors"
+              className="px-4 py-2 text-white  rounded hover:text-yellow-400 transition-colors "
               onClick={() => navigate("/login")}
             >
               Bus Tickets
             </button>
             <button
-              className="px-4 py-2 text-black  rounded hover:bg-blue-50 transition-colors"
+              className="px-4 py-2 text-white  rounded hover:text-yellow-400 transition-colors "
               onClick={() => navigate("/login")}
             >
               Travel Guides
             </button>
             <button
-              className="px-4 py-2 text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition-colors"
+              className="px-4 py-1 text-white border border-yellow-600 rounded hover:bg-yellow-600 transition-colors"
               onClick={() => navigate("/login")}
             >
               Login
             </button>
             <button
-              className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
+              className="px-4 py-1 text-black bg-yellow-400 rounded hover:bg-yellow-600 transition-colors"
               onClick={() => navigate("/signup")}
             >
               Signup
