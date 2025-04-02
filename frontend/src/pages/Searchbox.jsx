@@ -9,29 +9,29 @@ const SearchBox = () => {
   };
 
   return (
-    <div className="w-full flex justify-center mb-8 px-4 mt-8">
-      <div className="w-[900px]">
+    
+      <div className="w-[100%] max-w-[1200px] px-2 mx-auto ">
         <form 
           onSubmit={handleSearchSubmit} 
-          className="flex"
+          className="flex relative"
         >
           <input 
             type="text" 
-            placeholder="Where do you want to go?" 
+            placeholder="Enter the location" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full py-2 px-10 bg-white rounded-full focus:outline-none text-lg "
           />
           
           <button 
             type="submit" 
-            className="bg-green-600 text-white px-7 py-3 rounded-r-lg hover:bg-blue-700 transition-colors"
+            className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-5 py-2 rounded-full hover:bg-yellow-400 transition-colors "
           >
             Search
           </button>
         </form>
       </div>
-    </div>
+
   );
 };
 
