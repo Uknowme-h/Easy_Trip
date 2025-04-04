@@ -12,7 +12,7 @@ const app = express();
 const __dirname = path.resolve();
 dotenv.config();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", "https://easy-trip-smoky.vercel.app"], credentials: true }));
 
 app.use(express.json());
 app.use(cookieParser());
