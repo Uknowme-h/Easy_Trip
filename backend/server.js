@@ -12,7 +12,7 @@ const app = express();
 const __dirname = path.resolve();
 dotenv.config();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", "https://easy-trip-smoky.vercel.app"], credentials: true }));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use("/", (req, res) => {
     res.json("Api started");
 });
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     connectDB();
     console.log('Server is running on http://localhost:' + PORT);
 }
