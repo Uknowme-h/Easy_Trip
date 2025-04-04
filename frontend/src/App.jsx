@@ -35,12 +35,13 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const { isCheckingAuth, checkAuth } = useAuthStore();
+  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
+  console.log(isAuthenticated);
+  console.log(user);
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log(checkAuth);
   return (
     <div className="min-h-screen bg-[#17153B] flex items-center justify-center relative overflow-hidden">
       <Navbar />
@@ -63,6 +64,7 @@ function App() {
           }
         />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
+
         <Route
           path="/forgot-password"
           element={

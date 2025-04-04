@@ -10,6 +10,7 @@ const SignUpPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("traveler");
   const navigate = useNavigate();
 
   const { signup, error, isLoading } = useAuthStore();
@@ -18,19 +19,21 @@ const SignUpPage = () => {
     e.preventDefault();
 
     try {
-      await signup(email, password, name);
+      console.log(email, password, name, userType);
+      await signup(email, password, name, userType);
       navigate("/verify-email");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="max-w-md mt-20 w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
-			overflow-hidden"
+      overflow-hidden"
     >
       <div className="p-8">
         <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text">
@@ -59,14 +62,27 @@ const SignUpPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="mt-4">
+            <label className="block text-gray-400 mb-2">User Type</label>
+            <select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className="w-full p-3 bg-gray-700 text-white rounded-lg"
+            >
+              <option value="traveler">Traveler</option>
+              <option value="bus operator">Bus Operator</option>
+              <option value="travel agent">Travel Agent</option>
+              <option value="guesthouse owner">Guesthouse Owner</option>
+            </select>
+          </div>
           {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
           <PasswordStrengthMeter password={password} />
 
           <motion.button
             className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white 
-						font-bold rounded-lg shadow-lg hover:from-green-600
-						hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-						 focus:ring-offset-gray-900 transition duration-200"
+            font-bold rounded-lg shadow-lg hover:from-green-600
+            hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+            focus:ring-offset-gray-900 transition duration-200"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
@@ -91,4 +107,5 @@ const SignUpPage = () => {
     </motion.div>
   );
 };
+
 export default SignUpPage;
