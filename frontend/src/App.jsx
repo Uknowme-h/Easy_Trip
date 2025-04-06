@@ -9,6 +9,9 @@ import { useAuthStore } from "./store/authStore";
 import { createContext, useEffect, useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import Navbar from "./pages/Navbar";
+import AdminDashboard from "./AdminPages/AdminDashboard";
+import TravelerPage from "./AdminPages/TravelerPage";
+import Loader from "./components/Loader";
 
 // export const AuthContext = createContext();
 const ProtectedRoute = () => {
@@ -26,12 +29,33 @@ const ProtectedRoute = () => {
 
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
+  console.log("RedirectAuthenticatedUser", isAuthenticated, user);
 
-  if (isAuthenticated && user.isVerified) {
+  if (isAuthenticated && user?.isVerfied) {
     return <Navigate to="/" replace />;
   }
 
   return children;
+};
+
+const RedirectAuthenticatedAdmin = ({ children }) => {
+  const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
+  console.log("RedirectAuthenticatedAdmin", isAuthenticated, user);
+  console.log("user?.role", user?.role);
+  console.log("isLoading", isCheckingAuth);
+  if (isCheckingAuth) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    ); // Or a spinner
+  }
+
+  if (isAuthenticated && user?.role === "admin") {
+    return children; // Allow access to admin content
+  }
+
+  return <Navigate to="/" replace />; // Redirect non-admins
 };
 
 function App() {
@@ -84,6 +108,15 @@ function App() {
         />
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
+
+        <Route
+          path="/admin"
+          element={
+            <RedirectAuthenticatedAdmin>
+              <AdminDashboard />
+            </RedirectAuthenticatedAdmin>
+          }
+        />
       </Routes>
 
       <Toaster />
