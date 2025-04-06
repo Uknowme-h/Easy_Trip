@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import user from './routes/adminRoute.js';
 import path from 'path';
+import user_router from './routes/user.route.js';
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use('/api/upload', user);
+app.use('/api/user', user_router);
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
     app.get('*', (req, res) => {
