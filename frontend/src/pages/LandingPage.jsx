@@ -6,7 +6,7 @@ import SearchBox from "./Searchbox";
 // Travel Card Component
 const TravelCard = ({ location, country, price, nights }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       <div className="p-4">
         <h3 className="font-bold">
           {location}, {country}
@@ -28,22 +28,16 @@ const TravelCard = ({ location, country, price, nights }) => {
 };
 
 // Travel Agent Card Component
-const AgentCard = ({ name, role }) => {
+const AgentCard = ({ name, role, imageUrl }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4 transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       <div className="flex justify-center mb-3">
-        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
-          <svg
-            className="w-8 h-8 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+        <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#333333]">
+          <img 
+            src={imageUrl} 
+            alt={name} 
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
       <h3 className="font-bold text-center">{name}</h3>
@@ -69,7 +63,7 @@ const AgentCard = ({ name, role }) => {
 // Guesthouse Card Component
 const GuesthouseCard = ({ name, location, price }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       <img
         src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
         alt={name}
@@ -95,7 +89,7 @@ const GuesthouseCard = ({ name, location, price }) => {
 // Testimonial Card Component
 const TestimonialCard = ({ name, title, review }) => {
   return (
-    <div className="bg-[#333333] text-white p-6 rounded-lg">
+    <div className="bg-[#333333] text-white p-6 rounded-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       <p className="text-sm mb-2">{name}</p>
       <h3 className="font-bold mb-2">{title}</h3>
       <p className="text-sm">{review}</p>
@@ -167,11 +161,31 @@ function LandingPage() {
 
   // Travel agents data
   const agents = [
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
+    { 
+      name: "Lakpa Sherpa", 
+      role: "Trekking Expert",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
+    { 
+      name: "Mingma Tamang", 
+      role: "Cultural Guide",
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
+    { 
+      name: "Dawa Lama", 
+      role: "Adventure Specialist",
+      imageUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
+    { 
+      name: "Pemba Gurung", 
+      role: "Mountain Expert",
+      imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
+    { 
+      name: "Tenzin Wangchuk", 
+      role: "Local Experience Guide",
+      imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
   ];
 
   // Guesthouses data
@@ -234,12 +248,15 @@ function LandingPage() {
               />
             ))}
           </div>
-          <div className="text-right mt-2">
+          <div className="text-right mt-4">
             <button
-              className="text-blue-600 hover:text-gray-800 text-sm"
+              className="bg-[#333333] hover:bg-black text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-md flex items-center space-x-1 ml-auto"
               onClick={() => console.log("View all destinations clicked")}
             >
-              View All »
+              <span>View All</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </section>
@@ -251,15 +268,18 @@ function LandingPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {agents.map((agent, index) => (
-              <AgentCard key={index} name={agent.name} role={agent.role} />
+              <AgentCard key={index} name={agent.name} role={agent.role} imageUrl={agent.imageUrl} />
             ))}
           </div>
-          <div className="text-right mt-2">
+          <div className="text-right mt-4">
             <button
-              className="text-blue-600 hover:text-gray-800 text-sm"
+              className="bg-[#333333] hover:bg-black text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-md flex items-center space-x-1 ml-auto"
               onClick={() => console.log("View all agents clicked")}
             >
-              View All »
+              <span>View All</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </section>
@@ -279,12 +299,15 @@ function LandingPage() {
               />
             ))}
           </div>
-          <div className="text-right mt-2">
+          <div className="text-right mt-4">
             <button
-              className="text-blue-600 hover:text-gray-800 text-sm"
+              className="bg-[#333333] hover:bg-black text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-md flex items-center space-x-1 ml-auto"
               onClick={() => console.log("View all guesthouses clicked")}
             >
-              View All »
+              <span>View All</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </section>
@@ -297,7 +320,7 @@ function LandingPage() {
 
           {/* First Feature Box with Image */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-8">
-            <div className="bg-[#333333] text-white p-8 rounded-lg h-[350px]">
+            <div className="bg-[#333333] text-white p-8 rounded-lg h-[350px] transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold text-yellow-400 mb-6">
                 EASYTRIP MAKES IT POSSIBLE
               </h3>
@@ -329,26 +352,30 @@ function LandingPage() {
               </div>
             </div>
 
-            <div className="h-[350px] rounded-lg overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Luxury accommodation"
-                className="w-full h-full object-cover rounded-lg"
-              />
+            <div className="h-[350px] rounded-lg overflow-hidden flex items-center justify-center bg-gray-100">
+              <div className="w-[90%] h-[90%] rounded-lg overflow-hidden shadow-lg">
+                <img
+                  src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Luxury accommodation"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
             </div>
           </div>
 
           {/* Second Feature Box with Image */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-            <div className="h-[350px] rounded-lg overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Luxury villa"
-                className="w-full h-full object-cover rounded-lg"
-              />
+            <div className="h-[350px] rounded-lg overflow-hidden flex items-center justify-center bg-gray-100">
+              <div className="w-[90%] h-[90%] rounded-lg overflow-hidden shadow-lg">
+                <img
+                  src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Luxury villa"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
             </div>
 
-            <div className="bg-[#333333] text-white p-8 rounded-lg">
+            <div className="bg-[#333333] text-white p-8 rounded-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold text-yellow-400 mb-6">
                 EASYTRIP MAKES IT POSSIBLE
               </h3>
