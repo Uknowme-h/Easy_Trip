@@ -12,6 +12,7 @@ import Navbar from "./pages/Navbar";
 import AdminDashboard from "./AdminPages/AdminDashboard";
 import TravelerPage from "./AdminPages/TravelerPage";
 import Loader from "./components/Loader";
+import TravelAgentDashBoard from "./pages/TravelAgentDashBoard";
 
 // export const AuthContext = createContext();
 const ProtectedRoute = () => {
@@ -117,6 +118,8 @@ function App() {
             </RedirectAuthenticatedAdmin>
           }
         />
+
+        <Route path="/agent" element={<TravelAgentDashBoard />} />
       </Routes>
 
       <Toaster />
