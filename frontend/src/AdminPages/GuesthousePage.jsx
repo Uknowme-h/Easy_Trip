@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
+import { useUserStore } from "../store/userStore";
+import TravelerFormModal from "../components/TravelerFormModal";
+import UpdateTravelerFormModal from "../components/UpdateTravelerFormModal";
 
 const GuesthousePage = ({ users }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [showconfirmation, setShowConfirmation] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+  const [selectedTraveler, setSelectedTraveler] = useState(null);
+
+  const { deleteUser, fetchUsers } = useUserStore();
+
   return (
     <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Travelers</h2>
+      <h2 className="text-2xl font-bold mb-4">Guest House Owners</h2>
       <div className="flex justify-between items-center mb-4">
         <p>
           Showing{" "}
           {users.filter((user) => user.role === "guesthouse owner").length}{" "}
-          Guesthouse owner
+          Guest House Owners
         </p>
-        <button className="px-4 py-2 bg-green-500 text-white rounded-md">
-          Add new Guesthouse owner
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded-md"
+          onClick={() => setShowModal(true)}
+        >
+          Add Guest House Owners
         </button>
       </div>
+
       <div>
         {users
           .filter((user) => user.role === "guesthouse owner")
@@ -42,17 +57,84 @@ const GuesthousePage = ({ users }) => {
               </p>
 
               <div className="flex gap-4 text-gray-500">
-                <Edit className="cursor-pointer" />
-                <Trash2 className="cursor-pointer" />
+                <Edit
+                  className="cursor-pointer"
+                  onClick={async () => {
+                    setShowUpdateModal(true);
+                    setSelectedTraveler(user);
+                  }}
+                />
+                <Trash2
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setShowConfirmation(true);
+                    setSelectedTraveler(user._id);
+                    // Handle delete action here, e.g., call a delete function or show a confirmation modal
+                  }}
+                />
                 <MoreVertical className="cursor-pointer" />
               </div>
             </div>
           ))}
       </div>
+
       <div className="flex justify-between mt-4">
         <button className="px-4 py-2 bg-gray-200 rounded-md">Previous</button>
         <button className="px-4 py-2 bg-gray-200 rounded-md">Next</button>
       </div>
+
+      {/* Modal Component */}
+      <TravelerFormModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={async () => {
+          await fetchUsers();
+          setShowModal(false);
+        }}
+        defaultRole="guesthouse owner"
+      />
+
+      <UpdateTravelerFormModal
+        isOpen={showUpdateModal}
+        onClose={() => setShowUpdateModal(false)}
+        onSubmit={async () => {
+          await fetchUsers();
+          setShowUpdateModal(false);
+        }}
+        traveler={selectedTraveler}
+      />
+
+      {/* Confirmation Modal for Delete Action */}
+
+      {showconfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">Are you sure?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="flex justify-end mt-4 gap-2">
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                onClick={() => {
+                  deleteUser(selectedTraveler);
+                  console.log("Cancelled delete action: " + selectedTraveler);
+                  setSelectedTraveler(null);
+                  setShowConfirmation(false);
+                }}
+              >
+                Delete
+              </button>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={() => {
+                  setShowConfirmation(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

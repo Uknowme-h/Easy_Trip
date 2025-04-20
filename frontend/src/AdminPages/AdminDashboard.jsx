@@ -14,7 +14,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
-  console.log(users);
 
   const renderContent = () => {
     switch (activeTab) {

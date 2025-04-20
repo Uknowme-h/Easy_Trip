@@ -13,6 +13,8 @@ import AdminDashboard from "./AdminPages/AdminDashboard";
 import TravelerPage from "./AdminPages/TravelerPage";
 import Loader from "./components/Loader";
 import TravelAgentDashBoard from "./pages/TravelAgentDashBoard";
+import SearchBox from "./pages/Searchbox";
+import ResultPage from "./pages/ResultPage";
 
 // export const AuthContext = createContext();
 const ProtectedRoute = () => {
@@ -30,8 +32,6 @@ const ProtectedRoute = () => {
 
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
-  console.log("RedirectAuthenticatedUser", isAuthenticated, user);
-
   if (isAuthenticated && user?.isVerfied) {
     return <Navigate to="/" replace />;
   }
@@ -41,9 +41,6 @@ const RedirectAuthenticatedUser = ({ children }) => {
 
 const RedirectAuthenticatedAdmin = ({ children }) => {
   const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
-  console.log("RedirectAuthenticatedAdmin", isAuthenticated, user);
-  console.log("user?.role", user?.role);
-  console.log("isLoading", isCheckingAuth);
   if (isCheckingAuth) {
     return (
       <div>
@@ -118,6 +115,8 @@ function App() {
             </RedirectAuthenticatedAdmin>
           }
         />
+
+        <Route path="/results" element={<ResultPage />} />
 
         <Route path="/agent" element={<TravelAgentDashBoard />} />
       </Routes>

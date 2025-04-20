@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserStore } from "../store/userStore";
 import toast from "react-hot-toast";
 
-const TravelerFormModal = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  defaultRole = "traveler",
-}) => {
+const UpdateTravelerFormModal = ({ isOpen, onClose, onSubmit, traveler }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: traveler?.name || "",
+    email: traveler?.email || "",
     password: "",
-    role: defaultRole,
-    isVerified: false,
+    role: traveler?.role || "traveler",
+    isVerfied: traveler?.isVerfied || false,
   });
 
-  const { createUser } = useUserStore();
-  if (!isOpen) return null;
+  const { updateUser } = useUserStore();
+
+  useEffect(() => {
+    setFormData({
+      name: traveler?.name || "",
+      email: traveler?.email || "",
+      password: "",
+      role: traveler?.role || "traveler",
+      isVerfied: traveler?.isVerfied || false,
+    });
+  }, [traveler]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,66 +33,58 @@ const TravelerFormModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await createUser(
-      formData.name,
-      formData.email,
-      formData.password,
-      formData.role,
-      formData.isVerified
-    );
-
-    toast.success("User created successfully!");
+    // Pass the updated formData to the onSubmit handler
+    await updateUser(traveler._id, formData);
 
     onClose();
+    toast.success("updated successfully!");
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-white/10 flex items-center justify-center z-50">
-      <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-md p-6 rounded-xl w-96 shadow-2xl border border-gray-200">
-        <h2 className="text-xl font-bold mb-4">
-          Add New{" "}
-          {formData.role.charAt(0).toUpperCase() + formData.role.slice(1)}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Name</label>
+    <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-md shadow-lg w-96">
+        <h3 className="text-lg font-semibold mb-4">Update Traveler</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Name</label>
             <input
               type="text"
               name="name"
-              value={formData.name}
+              value={formData?.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Email</label>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Email</label>
             <input
               type="email"
               name="email"
-              value={formData.email}
+              value={formData?.email}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Password</label>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Password</label>
             <input
               type="password"
               name="password"
-              value={formData.password}
+              placeholder="Leave blank to keep current password"
+              value={formData?.password}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-              required
+              className="w-full px-3 py-2 border rounded-md"
             />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium">Role</label>
             <select
               name="role"
-              value={formData.role}
+              value={formData?.role}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded px-3 py-2"
             >
@@ -99,11 +95,11 @@ const TravelerFormModal = ({
               <option value="guesthouse owner">Guesthouse Owner</option>
             </select>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center mb-4">
             <input
               type="checkbox"
-              name="isVerified"
-              checked={formData.isVerified}
+              name="isVerfied"
+              checked={formData?.isVerfied}
               onChange={handleChange}
               className="mr-2"
             />
@@ -112,16 +108,16 @@ const TravelerFormModal = ({
           <div className="flex justify-end gap-2">
             <button
               type="button"
+              className="px-4 py-2 bg-gray-300 rounded-md"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 rounded"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
             >
-              Save
+              Update
             </button>
           </div>
         </form>
@@ -130,4 +126,4 @@ const TravelerFormModal = ({
   );
 };
 
-export default TravelerFormModal;
+export default UpdateTravelerFormModal;

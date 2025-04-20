@@ -521,15 +521,15 @@ const StyledWrapper = styled.div`
 
   @keyframes fade00 {
     0% {
-      background: #252525;
+      background: #f0f0f0; /* light gray */
     }
 
     50% {
-      background: #000000;
+      background: #ffffff; /* pure white */
     }
 
     100% {
-      background: #353535;
+      background: #e0e0e0; /* slightly darker light gray */
     }
   }
 `;

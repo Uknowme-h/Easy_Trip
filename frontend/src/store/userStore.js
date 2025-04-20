@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "https://easyback.nishantjswl.tech/api/user" : "https://easyback.nishantjswl.tech/api/user";
+const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/user" : "http://localhost:5000/api/user";
 
 axios.defaults.withCredentials = true;
 
@@ -22,10 +22,10 @@ export const useUserStore = create((set) => ({
     },
 
     // Create a new user
-    createUser: async (userData) => {
+    createUser: async (name, email, password, role, isVerfied) => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.post(`${API_URL}/users`, userData);
+            const response = await axios.post(`${API_URL}/`, { name, email, password, role, isVerfied });
             set((state) => ({ users: [...state.users, response.data], loading: false }));
         } catch (error) {
             set({ error: error.message, loading: false });
@@ -36,7 +36,7 @@ export const useUserStore = create((set) => ({
     updateUser: async (id, userData) => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.put(`${API_URL}/users/${id}`, userData);
+            const response = await axios.put(`${API_URL}/${id}`, userData);
             set((state) => ({
                 users: state.users.map((user) => (user._id === id ? response.data : user)),
                 loading: false,
@@ -50,7 +50,7 @@ export const useUserStore = create((set) => ({
     deleteUser: async (id) => {
         set({ loading: true, error: null });
         try {
-            await axios.delete(`${API_URL}/users/${id}`);
+            await axios.delete(`${API_URL}/${id}`);
             set((state) => ({
                 users: state.users.filter((user) => user._id !== id),
                 loading: false,

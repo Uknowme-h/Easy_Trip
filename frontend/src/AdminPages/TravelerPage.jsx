@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Edit, Trash2, MoreVertical } from "lucide-react";
 import TravelerFormModal from "../components/TravelerFormModal";
+import { useUserStore } from "../store/userStore";
+import UpdateTravelerFormModal from "../components/UpdateTravelerFormModal";
 
 const TravelerPage = ({ users }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showconfirmation, setShowConfirmation] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
-  const handleAddTraveler = (newTraveler) => {
-    console.log("New Traveler Submitted:", newTraveler);
-    // You can handle the new traveler object here (e.g., send it to your backend or update state)
-  };
+  const [selectedTraveler, setSelectedTraveler] = useState(null);
+
+  const { deleteUser, fetchUsers } = useUserStore();
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="p-5">
@@ -49,12 +56,25 @@ const TravelerPage = ({ users }) => {
                 </div>
               </div>
               <p className="text-sm">
-                {user.isVerified ? "Verified" : "Not Verified"}
+                {user.isVerfied ? "Verified" : "Not Verified"}
               </p>
 
               <div className="flex gap-4 text-gray-500">
-                <Edit className="cursor-pointer" />
-                <Trash2 className="cursor-pointer" />
+                <Edit
+                  className="cursor-pointer"
+                  onClick={async () => {
+                    setShowUpdateModal(true);
+                    setSelectedTraveler(user);
+                  }}
+                />
+                <Trash2
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setShowConfirmation(true);
+                    setSelectedTraveler(user._id);
+                    // Handle delete action here, e.g., call a delete function or show a confirmation modal
+                  }}
+                />
                 <MoreVertical className="cursor-pointer" />
               </div>
             </div>
@@ -70,8 +90,54 @@ const TravelerPage = ({ users }) => {
       <TravelerFormModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onSubmit={handleAddTraveler}
+        onSubmit={async () => {
+          await fetchUsers();
+          setShowModal(false);
+        }}
+        defaultRole="traveler"
       />
+
+      <UpdateTravelerFormModal
+        isOpen={showUpdateModal}
+        onClose={() => setShowUpdateModal(false)}
+        onSubmit={async () => {
+          await fetchUsers();
+          setShowUpdateModal(false);
+        }}
+        traveler={selectedTraveler}
+      />
+
+      {/* Confirmation Modal for Delete Action */}
+
+      {showconfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">Are you sure?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="flex justify-end mt-4 gap-2">
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                onClick={() => {
+                  deleteUser(selectedTraveler);
+                  console.log("Cancelled delete action: " + selectedTraveler);
+                  setSelectedTraveler(null);
+                  setShowConfirmation(false);
+                }}
+              >
+                Delete
+              </button>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={() => {
+                  setShowConfirmation(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

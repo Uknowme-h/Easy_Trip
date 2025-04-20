@@ -13,10 +13,10 @@ dotenv.config();
 
 export const signup = async (req, res) => {
 
-    const { name, email, password } = req.body;
+    const { name, email, password, userType } = req.body;
 
     try {
-        if (!email || !password || !name) {
+        if (!email || !password || !name || !userType) {
             return res.status(400).json({ msg: 'Please fill in all fields' });
         }
 
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
         const user = new User({
-            name, email, password: hashedPassword, verificationToken, verificationTokenExpires: Date.now() + 600000
+            name, email, password: hashedPassword, verificationToken, verificationTokenExpires: Date.now() + 600000, userType
 
         })
         await user.save();
