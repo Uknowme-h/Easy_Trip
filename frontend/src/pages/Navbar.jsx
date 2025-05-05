@@ -89,7 +89,7 @@ const Navbar = () => {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg">
                     <button
                       className="block w-full px-4 py-2 text-left text-black hover:bg-gray-100"
-                      onClick={() => navigate("/profile")}
+                      onClick={() => navigate("/user")}
                     >
                       Profile
                     </button>
