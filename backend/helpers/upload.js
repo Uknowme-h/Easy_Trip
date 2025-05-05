@@ -9,7 +9,7 @@ cloudinary.config({
 export const uploadFiles = async (file) => {
     try {
         const upload = await cloudinary.uploader.upload(file, {
-            resource_type: 'video'
+            resource_type: 'image'
         });
 
         return upload;
