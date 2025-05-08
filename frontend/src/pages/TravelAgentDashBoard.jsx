@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BookingsPage from './BookingsPage';
 import TravelersPage from './TravelersPage';
 import CreatePackagesPage from './CreatePackagesPage';
+import Guesthouses from './Guesthouses';
 
 const TravelAgentDashBoard = () => {
   const [activeTab, setActiveTab] = useState('Home');
@@ -34,6 +35,8 @@ const TravelAgentDashBoard = () => {
         return <TravelersPage />;
       case 'CreatePackage':
         return <CreatePackagesPage />;
+      case 'Guesthouses':
+        return <Guesthouses />;
       default:
         return (
           <div className="max-w-4xl mx-auto">
@@ -147,7 +150,12 @@ const TravelAgentDashBoard = () => {
       <div className="bg-gray-800 p-4 flex justify-between items-center">
         <div className="text-xl font-bold text-yellow-500">EasyTrip</div>
         <div className="flex space-x-6">
-          <div className="text-gray-200">GuestHouses</div>
+          <div 
+            className="text-gray-200 cursor-pointer hover:text-yellow-500 transition-colors"
+            onClick={() => setActiveTab('Guesthouses')}
+          >
+            GuestHouses
+          </div>
           <div className="text-gray-200">Bus Tickets</div>
           <div className="text-gray-200">Travel Guides</div>
         </div>
