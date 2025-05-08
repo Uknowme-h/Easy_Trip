@@ -23,4 +23,4 @@ var uploader = multer({
 user.post('/upload-file', uploader.single("file"), uploadFile);
 user.get("/get-file", getAllStore);
 
-export default user;
+export default user;    

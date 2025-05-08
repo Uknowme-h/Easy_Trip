@@ -1,12 +1,58 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchBox from "./Searchbox";
+import { useAuthStore } from "../store/authStore";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ResultPage = () => {
   const location = useLocation();
   const { results, allGuesthouses } = location.state || {};
-
   const guesthousesToShow = results ?? allGuesthouses ?? [];
+  const { user } = useAuthStore();
+
+  console.log(user);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGuesthouse, setSelectedGuesthouse] = useState(null);
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+
+  const openModal = (guesthouse) => {
+    setSelectedGuesthouse(guesthouse);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedGuesthouse(null);
+    setCheckInDate("");
+    setCheckOutDate("");
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmBooking = async (e) => {
+    e.preventDefault();
+
+    if (!checkInDate || !checkOutDate || !selectedGuesthouse) return;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/booking/create-checkout-session",
+        {
+          guesthouseId: selectedGuesthouse._id,
+          userId: user?._id,
+          checkInDate,
+          checkOutDate,
+          guests: 1, // you can adjust this as needed or make it a field in the form
+        }
+      );
+      console.log("Checkout session created:", res.data);
+      window.location.href = res.data.url; // Redirect to Stripe checkout
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      toast.error(error.response?.data?.message || "Error creating booking");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 pt-24 w-full">
@@ -17,7 +63,7 @@ const ResultPage = () => {
       <div className="max-w-[1200px] mx-auto px-6 pt-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">
-            {guesthousesToShow.length > 0
+            {guesthousesToShow?.length > 0
               ? "Search Results"
               : "No Guesthouses Found"}
           </h1>
@@ -37,18 +83,36 @@ const ResultPage = () => {
                 className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition duration-300"
               >
                 <img
-                  src={house.image}
-                  alt={house.guesthouse}
+                  src={house?.images}
+                  alt={house?.guesthouse}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
                   <h2 className="text-xl font-semibold text-gray-800">
-                    {house.guesthouse}
+                    {house?.name}
                   </h2>
-                  <p className="text-gray-500">{house.location}</p>
+                  <p className="text-gray-500">{house?.location}</p>
+                  <p className="text-gray-500">{house?.description}</p>
+                  <div className="mt-2">
+                    {house?.amenities?.map((amenity, index) => (
+                      <span
+                        key={index}
+                        className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-sm mr-2"
+                      >
+                        {amenity}
+                      </span>
+                    ))}
+                  </div>
+
                   <p className="text-yellow-600 font-bold mt-2">
-                    ${house.price_per_night} / night
+                    ${house?.pricePerNight} / night
                   </p>
+                  <button
+                    className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition"
+                    onClick={() => openModal(house)}
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
             ))
@@ -59,6 +123,55 @@ const ResultPage = () => {
           )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">
+              Book {selectedGuesthouse?.name}
+            </h2>
+            <form onSubmit={handleConfirmBooking}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">
+                  Check-in Date
+                </label>
+                <input
+                  type="date"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                  value={checkInDate}
+                  onChange={(e) => setCheckInDate(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">
+                  Check-out Date
+                </label>
+                <input
+                  type="date"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                  value={checkOutDate}
+                  onChange={(e) => setCheckOutDate(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Confirm Booking
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

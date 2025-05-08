@@ -7,11 +7,21 @@ import cors from 'cors';
 import user from './routes/adminRoute.js';
 import path from 'path';
 import user_router from './routes/user.route.js';
+import guesthouserouter from './routes/guesthouseRoutes.js';
+import bookingrouter from './routes/bookingRoutes.js';
+
+import { stripeWebhook } from './controllers/booking.controller.js';
 const PORT = process.env.PORT || 5000;
 const app = express();
 
 const __dirname = path.resolve();
 dotenv.config();
+// At the top of your server file (before app.use(express.json()))
+app.post(
+    "/webhook",
+    express.raw({ type: "application/json" }), // Stripe requires raw body
+    stripeWebhook
+);
 
 app.use(cors({
     origin: ["http://localhost:5173", "https://easy-trip-smoky.vercel.app"],
@@ -23,6 +33,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use('/api/upload', user);
 app.use('/api/user', user_router);
+app.use("/api/guesthouses", guesthouserouter);
+app.use("/api/booking", bookingrouter);
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
     app.get('*', (req, res) => {

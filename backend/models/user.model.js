@@ -26,18 +26,9 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpires: Date,
     verificationToken: String,
     verificationTokenExpires: Date,
-    library: {
-        type: [{
-            id: {
-                type: String,
-                required: true
-            },
-            url: {
-                type: String,
-                required: true
-            }
-        }],
-        default: []
+    profileImage: {
+        type: String,
+        default: ""
     },
     role: {
         type: String,
