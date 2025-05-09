@@ -85,6 +85,8 @@ const RoleBasedRoute = () => {
       return <GuestHouseProfile />;
     case "traveler":
       return <TravelersProfile />;
+    case "bus operator":
+      return <BusOperatorProfile />;
     default:
       return <Navigate to="/" replace />;
   }
@@ -156,10 +158,7 @@ function App() {
 
         <Route path="/guesthouse" element={<Guesthouses />} />
 
-
         <Route path="/bustickets" element={<Busticket />} />
-
-        <Route path="/busoperator" element={<BusOperatorProfile />} />
 
         <Route path="/busbooking" element={<BusBookingPage />} />
         <Route path="/user" element={<RoleBasedRoute />} />
