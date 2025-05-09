@@ -16,6 +16,9 @@ import TravelAgentDashBoard from "./pages/TravelAgentDashBoard";
 import SearchBox from "./pages/Searchbox";
 import ResultPage from "./pages/ResultPage";
 import Guesthouses from "./pages/Guesthouses";
+import Busticket from "./pages/Busticket";
+import BusOperatorProfile from "./pages/BusOperatorProfile";
+import BusBookingPage from "./pages/BusBookingPage";
 
 // export const AuthContext = createContext();
 const ProtectedRoute = () => {
@@ -123,6 +126,14 @@ function App() {
 
         <Route path="/guesthouse" element={<Guesthouses />} />
 
+        <Route path="/bustickets" element={<Busticket />} />
+
+        <Route path="/busoperator" element={<BusOperatorProfile />} />
+
+        <Route path="/busbooking" element={<BusBookingPage />} />
+
+        
+   
       </Routes>
 
       <Toaster />
