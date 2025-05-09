@@ -123,6 +123,7 @@ export const useAuthStore = create((set) => ({
                     'Content-Type': 'multipart/form-data'
                 }
             });
+
             set({ audioSrc: response.data, isLoading: false });
             return response.data;
         } catch (error) {
@@ -130,6 +131,7 @@ export const useAuthStore = create((set) => ({
             throw error;
         }
     },
+
     getFiles: async (user_id) => {
         set({ isLoading: true, error: null });
         console.log("user_id", user_id);

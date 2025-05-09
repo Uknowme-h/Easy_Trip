@@ -1,3 +1,5 @@
+import { Guesthouse } from "../models/Guesthouse.model.js";
+import { GuesthouseOwner } from "../models/GuesthouseOwner.model.js";
 import { User } from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 // Create a new user
@@ -19,6 +21,12 @@ export const createUser = async (req, res) => {
             name, email, password: hashedPassword, role, isVerfied
 
         })
+        if (role === 'guesthouse owner') {
+            await GuesthouseOwner.create({
+                userId: user._id,
+                businessName: `${name}'s Guesthouse`
+            });
+        }
         await user.save();
 
 
@@ -79,11 +87,28 @@ export const updateUser = async (req, res) => {
 // Delete a user by ID
 export const deleteUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.status(200).json({ message: "User deleted successfully" });
+
+        // Check if user is a guesthouse owner
+        if (user.role === "guesthouse owner") {
+            const owner = await GuesthouseOwner.findOne({ userId: user._id });
+
+            if (owner) {
+                // Delete all guesthouses owned by this owner
+                await Guesthouse.deleteMany({ owner: owner._id });
+
+                // Delete the GuesthouseOwner document
+                await GuesthouseOwner.findByIdAndDelete(owner._id);
+            }
+        }
+
+        // Delete the User document
+        await User.findByIdAndDelete(user._id);
+
+        res.status(200).json({ message: "User and related data deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

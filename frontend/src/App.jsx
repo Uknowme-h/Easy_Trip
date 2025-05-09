@@ -19,6 +19,9 @@ import Guesthouses from "./pages/Guesthouses";
 import Busticket from "./pages/Busticket";
 import BusOperatorProfile from "./pages/BusOperatorProfile";
 import BusBookingPage from "./pages/BusBookingPage";
+import TravelersProfile from "./Profiles/TravelersProfile";
+import GuestHouseProfile from "./Profiles/GuestHouseProfile";
+import SuccessPage from "./pages/SuccessPage";
 
 // export const AuthContext = createContext();
 const ProtectedRoute = () => {
@@ -58,6 +61,33 @@ const RedirectAuthenticatedAdmin = ({ children }) => {
   }
 
   return <Navigate to="/" replace />; // Redirect non-admins
+};
+
+const RoleBasedRoute = () => {
+  const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
+
+  if (isCheckingAuth) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    ); // Or a spinner
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  switch (user?.role) {
+    case "travel agent":
+      return <TravelAgentDashBoard />;
+    case "guesthouse owner":
+      return <GuestHouseProfile />;
+    case "traveler":
+      return <TravelersProfile />;
+    default:
+      return <Navigate to="/" replace />;
+  }
 };
 
 function App() {
@@ -126,14 +156,14 @@ function App() {
 
         <Route path="/guesthouse" element={<Guesthouses />} />
 
+
         <Route path="/bustickets" element={<Busticket />} />
 
         <Route path="/busoperator" element={<BusOperatorProfile />} />
 
         <Route path="/busbooking" element={<BusBookingPage />} />
-
-        
-   
+        <Route path="/user" element={<RoleBasedRoute />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Routes>
 
       <Toaster />

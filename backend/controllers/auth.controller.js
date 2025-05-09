@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
 import { Store } from '../models/Store.js';
 import { uploadFiles } from "../helpers/upload.js";
+import { GuesthouseOwner } from "../models/GuesthouseOwner.model.js";
 
 dotenv.config();
 
@@ -35,6 +36,13 @@ export const signup = async (req, res) => {
 
         generateTokenAndSetCookie(res, user._id); // generate JWT token and set cookie
         await sendVerificationEmail(user.email, verificationToken); // send verification email
+
+        if (userType === 'guesthouse owner') {
+            await GuesthouseOwner.create({
+                userId: user._id,
+                businessName: businessName || `${name}'s Guesthouse`
+            });
+        }
 
         res.status(201).json({ msg: 'User created successfully  ', user: { ...user._doc, password: undefined } });
     } catch (error) {
@@ -207,6 +215,7 @@ export const addbook = async (req, res) => {
 
 export const uploadFile = async (req, res) => {
     const { user_id } = req.body;
+    console.log("req.body", req.body);
 
     try {
         const upload = await uploadFiles(req.file.path);
@@ -223,7 +232,7 @@ export const uploadFile = async (req, res) => {
         }
 
         const record = await store.save();
-        res.send({ success: true, msg: 'File Uploaded Successfully!', data: record });
+        res.send({ success: true, msg: 'File Uploaded Successfully!', data: upload.secure_url });
 
     } catch (error) {
         res.send({ success: false, msg: error.message });
