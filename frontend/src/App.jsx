@@ -22,8 +22,8 @@ import BusBookingPage from "./pages/BusBookingPage";
 import TravelersProfile from "./Profiles/TravelersProfile";
 import GuestHouseProfile from "./Profiles/GuestHouseProfile";
 import SuccessPage from "./pages/SuccessPage";
+import CancellationDashboard from './components/CancellationDashboard';
 
-// export const AuthContext = createContext();
 const ProtectedRoute = () => {
   const { isAuthenticated, user } = useAuthStore();
 
@@ -163,6 +163,9 @@ function App() {
         <Route path="/busbooking" element={<BusBookingPage />} />
         <Route path="/user" element={<RoleBasedRoute />} />
         <Route path="/success" element={<SuccessPage />} />
+
+        {/* Add the route for CancellationDashboard */}
+        <Route path="/cancellation-dashboard" element={<CancellationDashboard />} />
       </Routes>
 
       <Toaster />
@@ -171,3 +174,4 @@ function App() {
 }
 
 export default App;
+
