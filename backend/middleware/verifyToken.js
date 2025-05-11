@@ -5,7 +5,7 @@ dotenv.config();
 export const verifyToken = (req, res, next) => {
 
     const token = req.cookies.token;
-    console.log("token in verifyToken ", token);
+
     if (!token) {
         return res.status(401).json({ success: false, message: "Not authorized to access this route" });
     }
@@ -18,6 +18,7 @@ export const verifyToken = (req, res, next) => {
             return res.status(401).json({ success: false, message: "Not authorized invalid token" });
         }
         req.userId = decoded.id;
+
         next();
 
 

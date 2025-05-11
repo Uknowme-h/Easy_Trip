@@ -22,7 +22,8 @@ import BusBookingPage from "./pages/BusBookingPage";
 import TravelersProfile from "./Profiles/TravelersProfile";
 import GuestHouseProfile from "./Profiles/GuestHouseProfile";
 import SuccessPage from "./pages/SuccessPage";
-import CancellationDashboard from './components/CancellationDashboard';
+import BusServices from "./pages/BusServices";
+import BusBooked from "./pages/BusBooked";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, user } = useAuthStore();
@@ -158,14 +159,19 @@ function App() {
 
         <Route path="/guesthouse" element={<Guesthouses />} />
 
-        <Route path="/bustickets" element={<Busticket />} />
+        {/* <Route path="/bustickets" element={<Busticket />} /> */}
+        <Route path="/busservices" element={<BusServices />} />
 
         <Route path="/busbooking" element={<BusBookingPage />} />
         <Route path="/user" element={<RoleBasedRoute />} />
+        <Route path="/busbooked" element={<BusBooked />} />
         <Route path="/success" element={<SuccessPage />} />
 
         {/* Add the route for CancellationDashboard */}
-        <Route path="/cancellation-dashboard" element={<CancellationDashboard />} />
+        <Route
+          path="/cancellation-dashboard"
+          element={<CancellationDashboard />}
+        />
       </Routes>
 
       <Toaster />
@@ -174,4 +180,3 @@ function App() {
 }
 
 export default App;
-

@@ -66,7 +66,7 @@ const Navbar = () => {
             </button>
             <button
               className="px-4 py-2 text-white rounded hover:text-yellow-400 transition-colors"
-              onClick={() => navigate("/guesthouses")}
+              onClick={() => navigate("/busservices")}
             >
               Bus Tickets
             </button>

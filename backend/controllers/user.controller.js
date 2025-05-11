@@ -1,3 +1,4 @@
+import { BusOperator } from "../models/BusOperator.model.js";
 import { Guesthouse } from "../models/Guesthouse.model.js";
 import { GuesthouseOwner } from "../models/GuesthouseOwner.model.js";
 import { User } from "../models/user.model.js";
@@ -27,6 +28,14 @@ export const createUser = async (req, res) => {
                 businessName: `${name}'s Guesthouse`
             });
         }
+
+        if (role === 'bus operator') {
+            await BusOperator.create({
+                user: user._id,
+                companyName: `${name}'s Bus Company`
+            });
+        }
+
         await user.save();
 
 

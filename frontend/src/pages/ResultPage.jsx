@@ -9,7 +9,7 @@ const ResultPage = () => {
   const location = useLocation();
   const { results, allGuesthouses } = location.state || {};
   const guesthousesToShow = results ?? allGuesthouses ?? [];
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   console.log(user);
 
@@ -36,6 +36,10 @@ const ResultPage = () => {
     if (!checkInDate || !checkOutDate || !selectedGuesthouse) return;
 
     try {
+      if (!isAuthenticated) {
+        toast.error("Please log in to book a guesthouse.");
+        return;
+      }
       const res = await axios.post(
         "http://localhost:5000/api/booking/create-checkout-session",
         {

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Camera } from "lucide-react";
-import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 import { useUserStore } from "../store/userStore";
+import useBookingStore from "../store/bookingStore";
+import toast from "react-hot-toast";
 
 const TravelersProfile = () => {
   const [bookings, setBookings] = useState([]);
   const { user, uploadFile } = useAuthStore();
   const { updateUser } = useUserStore();
   const userId = user?._id;
+  const { getUserBookings, userBookings, cancelBooking } = useBookingStore();
 
   const handleProfileImageChange = async (event) => {
     const file = event.target.files[0];
@@ -17,8 +19,26 @@ const TravelersProfile = () => {
         const response = await uploadFile(userId, file);
         const imageUrl = response?.data;
         await updateUser(user._id, { profileImage: imageUrl });
+        toast.success("Profile image updated successfully");
       } catch (error) {
         console.error("Error updating profile image:", error);
+      }
+    }
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
+    console.log(userBookings);
+    console.log(bookingId);
+    if (confirmCancel) {
+      try {
+        await cancelBooking(bookingId);
+        await getUserBookings(userId); // Refresh bookings after cancellation
+        toast.success("Booking cancelled successfully");
+      } catch (error) {
+        console.error("Error canceling booking:", error);
       }
     }
   };
@@ -26,11 +46,7 @@ const TravelersProfile = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/booking/user/${userId}`
-        );
-        setBookings(response.data);
-        console.log("Bookings:", response.data);
+        await getUserBookings(userId);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -81,13 +97,14 @@ const TravelersProfile = () => {
 
         {/* Edit Profile Form */}
         <div className="lg:col-span-2 bg-white p-6 rounded-md shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Edit Profile</h2>
+          <h2 className="text-lg font-semibold mb-4">Profile</h2>
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Full Name"
-              className="border border-gray-300 rounded-md p-2"
+              className="border border-gray-300 rounded-md p-2 block"
               defaultValue={user?.name || ""}
+              disabled
             />
 
             <input
@@ -95,14 +112,15 @@ const TravelersProfile = () => {
               placeholder="Email"
               className="border border-gray-300 rounded-md p-2"
               defaultValue={user?.email || ""}
+              disabled
             />
-
+            {/* 
             <button
               type="submit"
               className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 md:col-span-2"
             >
               Save Changes
-            </button>
+            </button> */}
           </form>
         </div>
       </div>
@@ -111,8 +129,8 @@ const TravelersProfile = () => {
       <div className="mt-6">
         <h2 className="text-lg font-semibold mb-4">My Bookings</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {bookings.length > 0 ? (
-            bookings.map((trip, index) => {
+          {userBookings.length > 0 ? (
+            userBookings.map((trip, index) => {
               const formattedCheckInDate = new Date(
                 trip?.checkInDate
               ).toLocaleDateString();
@@ -138,13 +156,14 @@ const TravelersProfile = () => {
                       <h3 className="text-md font-semibold">
                         {trip?.guesthouse.name}
                       </h3>
-                      <h3 className="text-md font-semibold">
-                        {trip?.guesthouse.location}
-                      </h3>
+
                       <span className="text-sm text-gray-500">
                         {formattedCheckInDate} - {formattedCheckOutDate}
                       </span>
                     </div>
+                    <h4 className="text-md font-semibold">
+                      Location : {trip?.guesthouse.location}
+                    </h4>
                     <p className="text-sm text-gray-500">
                       Duration:{" "}
                       {Math.ceil(
@@ -154,12 +173,29 @@ const TravelersProfile = () => {
                       )}{" "}
                       days
                     </p>
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="text-yellow-500 font-bold"></span>
-                      <button className="text-blue-600 text-sm hover:underline">
-                        View Details
+                    <p className="text-sm text-gray-500">
+                      Total Price: ${trip?.totalPrice}
+                    </p>
+
+                    <p className="text-sm text-gray-500">
+                      Booking Status:{" "}
+                      {trip?.status === "confirmed" ? (
+                        <span className="text-green-600">Confirmed</span>
+                      ) : trip?.status === "pending" ? (
+                        <span className="text-yellow-600">Pending</span>
+                      ) : (
+                        <span className="text-red-600">Cancelled</span>
+                      )}
+                    </p>
+
+                    {trip?.status !== "cancelled" && (
+                      <button
+                        onClick={() => handleCancelBooking(trip?._id)}
+                        className="mt-2 bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700"
+                      >
+                        Cancel Booking
                       </button>
-                    </div>
+                    )}
                   </div>
                 </div>
               );

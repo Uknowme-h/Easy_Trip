@@ -44,6 +44,14 @@ export const signup = async (req, res) => {
             });
         }
 
+        if (userType === 'bus operator') {
+            await BusOperator.create({
+                userId: user._id,
+                companyName: companyName || `${name}'s Bus Company`
+            });
+        }
+
+
         res.status(201).json({ msg: 'User created successfully  ', user: { ...user._doc, password: undefined } });
     } catch (error) {
         res.status(500).json({ msg: error.message });
