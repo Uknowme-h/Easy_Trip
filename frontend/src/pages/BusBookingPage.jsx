@@ -8,7 +8,7 @@ export default function BusSeatBooking() {
   const [email, setEmail] = useState('');
   
   const seatPrice = 1200;
-  const serviceFee = 50;
+  const serviceFee = 60;
   
   // Define the exact seat layout from the image
   const getSeatLayout = () => {
@@ -98,7 +98,7 @@ export default function BusSeatBooking() {
       {/* Main Content */}
       <main className="flex-1 bg-white">
         <div className="max-w-6xl mx-auto grid grid-cols-2 divide-x">
-          {/* Left Column - Seat Selection */}
+          {/* L- Seat Selection */}
           <div className="p-8">
             <h1 className="text-2xl font-bold mb-6">Book Now!!</h1>
             
