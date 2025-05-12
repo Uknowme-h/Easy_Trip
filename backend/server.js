@@ -11,10 +11,10 @@ import guesthouserouter from './routes/guesthouseRoutes.js';
 
 import { stripeWebhook } from './controllers/booking.controller.js';
 import busRoutes from './routes/bus.route.js';
-import bookingRoutes from './routes/busBooking.route.js';
 import busbookingRoutes from './routes/busBooking.route.js';
 import busop from './routes/busOperator.route.js';
 import { handleStripeWebhook } from './controllers/busbooking.controller.js';
+import bookingrouter from './routes/bookingRoutes.js';
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -27,7 +27,7 @@ app.post(
     stripeWebhook
 );
 
-app.post("/webhook/bus", (req, res, next) => {
+app.post("/webhooks/bus", (req, res, next) => {
     let data = '';
     req.on('data', (chunk) => {
         data += chunk;
@@ -52,7 +52,7 @@ app.use("/api/auth", authRoutes);
 app.use('/api/upload', user);
 app.use('/api/user', user_router);
 app.use("/api/guesthouses", guesthouserouter);
-app.use("/api/booking", bookingRoutes);
+app.use("/api/booking", bookingrouter);
 app.use('/api/buses', busRoutes);
 app.use('/api/busbookings', busbookingRoutes);
 app.use('/api/busops', busop);

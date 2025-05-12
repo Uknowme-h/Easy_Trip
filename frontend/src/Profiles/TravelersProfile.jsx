@@ -4,13 +4,52 @@ import { useAuthStore } from "../store/authStore";
 import { useUserStore } from "../store/userStore";
 import useBookingStore from "../store/bookingStore";
 import toast from "react-hot-toast";
+import useBusBookingStore from "../store/busbookingStore";
+import useBusStore from "../store/busStore";
 
 const TravelersProfile = () => {
-  const [bookings, setBookings] = useState([]);
   const { user, uploadFile } = useAuthStore();
   const { updateUser } = useUserStore();
   const userId = user?._id;
+
   const { getUserBookings, userBookings, cancelBooking } = useBookingStore();
+  const { fetchBookingsByUserId, bookings: busbookings } = useBusBookingStore();
+  const { fetchBusById } = useBusStore();
+
+  const [busDetailsMap, setBusDetailsMap] = useState({});
+
+  // Fetch guesthouse bookings
+  useEffect(() => {
+    getUserBookings(userId).catch((err) =>
+      console.error("Error fetching guesthouse bookings:", err)
+    );
+  }, [userId]);
+
+  // Fetch bus bookings
+  useEffect(() => {
+    fetchBookingsByUserId(userId).catch((err) =>
+      console.error("Error fetching bus bookings:", err)
+    );
+  }, [userId]);
+
+  // Fetch bus details for each busBooking
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const map = {};
+      for (const booking of busbookings) {
+        const busId = booking.bus;
+        if (busId && !map[busId]) {
+          const response = await fetchBusById(busId);
+          if (response) map[busId] = response;
+        }
+      }
+      setBusDetailsMap(map);
+    };
+
+    if (busbookings.length > 0) {
+      fetchDetails();
+    }
+  }, [busbookings]);
 
   const handleProfileImageChange = async (event) => {
     const file = event.target.files[0];
@@ -30,30 +69,16 @@ const TravelersProfile = () => {
     const confirmCancel = window.confirm(
       "Are you sure you want to cancel this booking?"
     );
-    console.log(userBookings);
-    console.log(bookingId);
     if (confirmCancel) {
       try {
         await cancelBooking(bookingId);
-        await getUserBookings(userId); // Refresh bookings after cancellation
+        await getUserBookings(userId);
         toast.success("Booking cancelled successfully");
       } catch (error) {
         console.error("Error canceling booking:", error);
       }
     }
   };
-
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        await getUserBookings(userId);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
-
-    fetchBookings();
-  }, [userId]);
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-6">
@@ -95,7 +120,7 @@ const TravelersProfile = () => {
           </div>
         </div>
 
-        {/* Edit Profile Form */}
+        {/* Profile Details */}
         <div className="lg:col-span-2 bg-white p-6 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Profile</h2>
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -106,7 +131,6 @@ const TravelersProfile = () => {
               defaultValue={user?.name || ""}
               disabled
             />
-
             <input
               type="email"
               placeholder="Email"
@@ -114,18 +138,11 @@ const TravelersProfile = () => {
               defaultValue={user?.email || ""}
               disabled
             />
-            {/* 
-            <button
-              type="submit"
-              className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 md:col-span-2"
-            >
-              Save Changes
-            </button> */}
           </form>
         </div>
       </div>
 
-      {/* Travel History */}
+      {/* Guesthouse Bookings */}
       <div className="mt-6">
         <h2 className="text-lg font-semibold mb-4">My Bookings</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -137,7 +154,6 @@ const TravelersProfile = () => {
               const formattedCheckOutDate = new Date(
                 trip?.checkOutDate
               ).toLocaleDateString();
-
               return (
                 <div
                   key={index}
@@ -156,13 +172,12 @@ const TravelersProfile = () => {
                       <h3 className="text-md font-semibold">
                         {trip?.guesthouse.name}
                       </h3>
-
                       <span className="text-sm text-gray-500">
                         {formattedCheckInDate} - {formattedCheckOutDate}
                       </span>
                     </div>
                     <h4 className="text-md font-semibold">
-                      Location : {trip?.guesthouse.location}
+                      Location: {trip?.guesthouse.location}
                     </h4>
                     <p className="text-sm text-gray-500">
                       Duration:{" "}
@@ -176,7 +191,6 @@ const TravelersProfile = () => {
                     <p className="text-sm text-gray-500">
                       Total Price: ${trip?.totalPrice}
                     </p>
-
                     <p className="text-sm text-gray-500">
                       Booking Status:{" "}
                       {trip?.status === "confirmed" ? (
@@ -187,7 +201,6 @@ const TravelersProfile = () => {
                         <span className="text-red-600">Cancelled</span>
                       )}
                     </p>
-
                     {trip?.status !== "cancelled" && (
                       <button
                         onClick={() => handleCancelBooking(trip?._id)}
@@ -202,6 +215,85 @@ const TravelersProfile = () => {
             })
           ) : (
             <p className="text-gray-500">No bookings found.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Bus Bookings with Bus Details */}
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold mb-4">My Bus Bookings</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {busbookings.length > 0 ? (
+            busbookings.map((booking, index) => {
+              const bus = busDetailsMap[booking.bus];
+              const formattedBookingTime = new Date(
+                booking.bookingTime
+              ).toLocaleString();
+
+              return (
+                <div key={index} className="bg-white rounded-md shadow-md p-4">
+                  <h3 className="text-md font-semibold mb-1">
+                    Booking ID: {booking._id}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Booking Time: {formattedBookingTime}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Seats: {booking.seatNumbers.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Total Amount: ${booking.totalAmount}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Status:{" "}
+                    {booking.status === "confirmed" ? (
+                      <span className="text-green-600 font-semibold">
+                        Confirmed
+                      </span>
+                    ) : booking.status === "pending" ? (
+                      <span className="text-yellow-600 font-semibold">
+                        Pending
+                      </span>
+                    ) : (
+                      <span className="text-red-600 font-semibold">
+                        Cancelled
+                      </span>
+                    )}
+                  </p>
+
+                  {bus && (
+                    <div className="mt-4 text-sm text-gray-700">
+                      <p>
+                        <strong>Bus Name:</strong> {bus.name}
+                      </p>
+                      <p>
+                        <strong>Bus Number:</strong> {bus.busNumber}
+                      </p>
+                      <p>
+                        <strong>Route:</strong> {bus.route.source} to{" "}
+                        {bus.route.destination}
+                      </p>
+                      <p>
+                        <strong>Departure:</strong>{" "}
+                        {new Date(bus.departureTime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Arrival:</strong>{" "}
+                        {new Date(bus.arrivalTime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Company:</strong> {bus.operator?.companyName}
+                      </p>
+                      <p>
+                        <strong>Contact:</strong> {bus.operator?.contactNumber}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-gray-500">No bus bookings found.</p>
           )}
         </div>
       </div>

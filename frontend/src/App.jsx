@@ -163,15 +163,12 @@ function App() {
         <Route path="/busservices" element={<BusServices />} />
 
         <Route path="/busbooking" element={<BusBookingPage />} />
-        <Route path="/user" element={<RoleBasedRoute />} />
+        {/* protected route */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/user" element={<RoleBasedRoute />} />
+        </Route>
         <Route path="/busbooked" element={<BusBooked />} />
         <Route path="/success" element={<SuccessPage />} />
-
-        {/* Add the route for CancellationDashboard */}
-        <Route
-          path="/cancellation-dashboard"
-          element={<CancellationDashboard />}
-        />
       </Routes>
 
       <Toaster />

@@ -28,7 +28,8 @@ export default function BusSeatBooking() {
   const [searchParams] = useSearchParams();
   const busId = searchParams.get("busid");
 
-  const { fetchBusById, bus } = useBusStore();
+  const { fetchBusById } = useBusStore();
+  const [bus, setBus] = useState(null);
   const {
     createBooking,
     fetchBookingsByBusId,
@@ -40,7 +41,8 @@ export default function BusSeatBooking() {
   useEffect(() => {
     const fetchBusDetails = async () => {
       try {
-        await fetchBusById(busId);
+        const response = await fetchBusById(busId);
+        setBus(response);
       } catch (error) {
         console.error("Error fetching bus details:", error);
       }

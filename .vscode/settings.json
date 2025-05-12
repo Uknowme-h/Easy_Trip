@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/c236a53c-26c2-4456-800d-dd3e1136fe98/resourceGroups/EasyTrip_group/providers/Microsoft.Web/sites/EasyTrip",
+    "appService.deploySubpath": "backend"
+}

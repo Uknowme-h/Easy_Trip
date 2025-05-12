@@ -7,8 +7,12 @@ dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {
+    res.set("Cache-Control", "no-store"); // prevent 304 caching
+
     try {
         const { guesthouseId, userId, checkInDate, checkOutDate, guests } = req.body;
+
+        console.log("Creating checkout session with data:");
 
         // Validate guesthouse exists
         const guesthouse = await Guesthouse.findById(guesthouseId);
@@ -35,7 +39,7 @@ export const createCheckoutSession = async (req, res) => {
         const days = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
         const totalPrice = guesthouse.pricePerNight * days;
 
-        console.log("Total Price:", totalPrice);
+
 
         // Create Stripe session
         const session = await stripe.checkout.sessions.create({
@@ -65,7 +69,6 @@ export const createCheckoutSession = async (req, res) => {
                 guests: JSON.stringify(guests)
             }
         });
-
 
         res.status(200).json({ url: session.url });
     } catch (err) {
