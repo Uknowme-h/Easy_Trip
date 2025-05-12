@@ -155,6 +155,14 @@ const BusOperatorProfile = () => {
                 </button>
               </div>
             </div>
+
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Contact Support</h2>
+              <p className="text-gray-600 mb-4">Need help? Our support team is available 24/7</p>
+              <button className="w-full flex items-center justify-center px-4 py-2 bg-[#333333] hover:bg-yellow-400 hover:text-[#333333] text-white font-medium rounded transition-colors duration-300">
+                Contact Support
+              </button>
+            </div>
           </div>
         </div>
       </div>

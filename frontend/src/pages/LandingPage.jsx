@@ -3,19 +3,26 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import SearchBox from "./Searchbox";
 
-// Travel Card Component
-const TravelCard = ({ location, country, price, nights }) => {
+// Updated Travel Card Component with Images
+const TravelCard = ({ location, country, price, nights, image }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <a href={`/destination/${location.toLowerCase().replace(/\s+/g, '-')}`}>
+        <img
+          src={image}
+          alt={`${location}, ${country}`}
+          className="w-full h-40 object-cover hover:opacity-90 transition-opacity"
+        />
+      </a>
       <div className="p-4">
         <h3 className="text-lg font-bold text-gray-800">
           {location}, {country}
         </h3>
-        <p className="text-base text-gray-600 mb-2">
+        <p className="text-sm text-gray-600 mb-2">
           From ${price} · {nights} nights
         </p>
         <button
-          className="bg-[#333333] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
+          className="bg-[#555555] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
           onClick={() =>
             console.log(`View details clicked for ${location}, ${country}`)
           }
@@ -28,35 +35,27 @@ const TravelCard = ({ location, country, price, nights }) => {
 };
 
 // Travel Agent Card Component
-const AgentCard = ({ name, role }) => {
+const AgentCard = ({ name, role, image }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       <div className="flex justify-center mb-3">
-        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
-          <svg
-            className="w-8 h-8 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
+        <img
+          src={image}
+          alt={name}
+          className="w-16 h-16 rounded-full object-cover"
+        />
       </div>
       <h3 className="text-lg font-bold text-gray-800 text-center">{name}</h3>
-      <p className="text-base text-gray-600 mb-3 text-center">{role}</p>
+      <p className="text-sm text-gray-600 mb-3 text-center">{role}</p>
       <div className="flex justify-center space-x-2">
         <button
-          className="bg-[#333333] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
+          className="bg-[#555555] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
           onClick={() => console.log(`Contact clicked for ${name}`)}
         >
           Contact
         </button>
         <button
-          className="bg-transparent hover:bg-yellow-400 hover:text-[#333333] border border-[#333333] text-[#333333] px-3 py-1 text-sm rounded transition-colors duration-200"
+          className="bg-transparent hover:bg-yellow-400 hover:text-[#333333] border border-[#555555] text-[#555555] px-3 py-1 text-sm rounded transition-colors duration-200"
           onClick={() => console.log(`View profile clicked for ${name}`)}
         >
           View Profile
@@ -65,6 +64,7 @@ const AgentCard = ({ name, role }) => {
     </div>
   );
 };
+
 
 // Guesthouse Card Component
 const GuesthouseCard = ({ name, location, price, image }) => {
@@ -79,7 +79,7 @@ const GuesthouseCard = ({ name, location, price, image }) => {
       </a>
       <div className="p-4">
         <h3 className="text-lg font-bold text-gray-800 mb-1">{name}</h3>
-        <p className="text-base text-gray-600 mb-3">{location}</p>
+        <p className="text-sm text-gray-600 mb-3">{location}</p>
         <div className="flex justify-between items-center">
           <button
             className="bg-[#333333] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
@@ -87,7 +87,7 @@ const GuesthouseCard = ({ name, location, price, image }) => {
           >
             Book Now
           </button>
-          <span className="text-base text-yellow-600">${price}/night</span>
+          <span className="text-sm text-yellow-600">${price}/night</span>
         </div>
       </div>
     </div>
@@ -98,9 +98,9 @@ const GuesthouseCard = ({ name, location, price, image }) => {
 const TestimonialCard = ({ name, title, review }) => {
   return (
     <div className="bg-[#333333] text-white p-6 rounded-lg">
-      <p className="text-base text-gray-300 mb-2">{name}</p>
+      <p className="text-sm text-gray-300 mb-2">{name}</p>
       <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-base text-gray-300">{review}</p>
+      <p className="text-sm text-gray-300">{review}</p>
     </div>
   );
 };
@@ -110,7 +110,7 @@ const FeatureItem = ({ title, description }) => {
   return (
     <div className="mb-4">
       <h3 className="text-lg font-bold text-gray-800 mb-1">{title}</h3>
-      <p className="text-base text-gray-600">{description}</p>
+      <p className="text-sm text-gray-600">{description}</p>
     </div>
   );
 };
@@ -118,13 +118,43 @@ const FeatureItem = ({ title, description }) => {
 function LandingPage() {
   const navigate = useNavigate();
 
-  // Destinations data
+  // Updated Destinations data with images
   const destinations = [
-    { location: "Lakeside", country: "Pokhara", price: "899", nights: "7" },
-    { location: "Lakeside", country: "Pokhara", price: "899", nights: "7" },
-    { location: "Lakeside", country: "Pokhara", price: "899", nights: "7" },
-    { location: "Lakeside", country: "Pokhara", price: "899", nights: "7" },
-    { location: "Lakeside", country: "Pokhara", price: "899", nights: "7" },
+    { 
+      location: "Pokhara", 
+      country: "Nepal", 
+      price: "899", 
+      nights: "7",
+      image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    },
+    { 
+      location: "Kathmandu", 
+      country: "Nepal", 
+      price: "799", 
+      nights: "5",
+      image: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    },
+    { 
+      location: "Chitwan", 
+      country: "Nepal", 
+      price: "699", 
+      nights: "4",
+      image: "https://cdn.kimkim.com/files/a/content_articles/featured_photos/539be48117e7eb2f74ba27da8f2f5add48787a19/medium-3045f129d612b5f415832b5958809be3.jpg"
+    },
+    { 
+      location: "Lumbini", 
+      country: "Nepal", 
+      price: "599", 
+      nights: "3",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSZ-sTZ0TbKEcityxP1Z0tpOxzYqgwi7G4RQ&s"
+    },
+    { 
+      location: "Nagarkot", 
+      country: "Nepal", 
+      price: "499", 
+      nights: "2",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/87/5f/c3/caption.jpg?w=300&h=300&s=1"
+    },
   ];
 
   // Features data
@@ -149,32 +179,53 @@ function LandingPage() {
   const testimonials = [
     {
       name: "Prajen Shrestha",
-      title: "Amazing, Experience",
+      title: "Amazing Experience",
       review:
-        "I've used many travel site but the EasyTrip offers the best combination of deals and user experiences.",
+        "I've used many travel sites but EasyTrip offers the best combination of deals and user experiences.",
     },
     {
-      name: "Prajen Shrestha",
-      title: "Amazing, Experience",
+      name: "Aaishma Manandhar",
+      title: "Excellent Service",
       review:
-        "I've used many travel site but the EasyTrip offers the best combination of deals and user experiences.",
+        "The customer support is exceptional. They helped me plan my entire trip to Pokhara with great recommendations.",
     },
     {
-      name: "Prajen Shrestha",
-      title: "Amazing, Experience",
+      name: "Rajesh Hamal",
+      title: "Smooth Booking Process",
       review:
-        "I've used many travel site but the EasyTrip offers the best combination of deals and user experiences.",
+        "The booking process was seamless and I got great deals on both accommodation and transportation.",
     },
   ];
 
   // Travel agents data
-  const agents = [
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-    { name: "Lakpa Sherpa", role: "Trekking Expert" },
-  ];
+const agents = [
+  {
+    name: "Lakpa Sherpa",
+    role: "Trekking Expert",
+    image: "https://randomuser.me/api/portraits/men/51.jpg",
+  },
+  {
+    name: "Ramesh Poudel",
+    role: "Trekking Expert",
+    image: "https://randomuser.me/api/portraits/men/52.jpg",
+  },
+  {
+    name: "Lesang Rai",
+    role: "Trekking Expert",
+    image: "https://randomuser.me/api/portraits/men/53.jpg",
+  },
+  {
+    name: "Bishow Thapa",
+    role: "Trekking Expert",
+    image: "https://plus.unsplash.com/premium_photo-1665203644093-b3b8ebfa4cb3?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwaGlraW5nfGVufDB8fDB8fHww",
+  },
+  {
+    name: "Pemba Thapa",
+    role: "Trekking Expert",
+    image: "https://randomuser.me/api/portraits/men/55.jpg",
+  },
+];
+
 
   // Guesthouses data
   const guesthouses = [
@@ -188,30 +239,30 @@ function LandingPage() {
       name: "Himalayan Horizon Lodge", 
       location: "Nagarkot, Nepal", 
       price: "40",
-      image: "https://www.newconcept180.com/images/blog/deck-addition.png"
+      image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     },
     { 
       name: "Everest Base Guesthouse", 
       location: "Lukla, Nepal", 
       price: "55",
-      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/7c/11/39/blaauwheim-guest-house.jpg?w=900&h=500&s=1"
+      image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     },
     { 
       name: "Peaceful Stupa Retreat", 
       location: "Lumbini, Nepal", 
       price: "35",
-      image: "https://www.phgmag.com/wp-content/uploads/2020/07/PHG0820Art01Roberts01.jpg"
+      image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     },
     { 
       name: "Thamel Travelers Inn", 
       location: "Kathmandu, Nepal", 
       price: "30",
-      image: "https://www.eyrc.com/hubfs/Imported_Blog_Media/modern-guest-house-eyrc-architects-ridge-mountain-exterior-Jan-15-2025-04-26-35-6959-PM.jpg"
+      image: "https://images.unsplash.com/photo-1545158535-c3f7168c28b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     }
   ];
 
   return (
-    <div className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden">
+    <div className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden" style={{fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif"}}>
       <Navbar />
 
       {/* Hero Image with Search Box */}
@@ -245,7 +296,83 @@ function LandingPage() {
 
       {/* Main Content */}
       <div className="max-w-screen-xl mx-auto px-6 md:px-10 pt-20">
-        {/* Destinations Section */}
+        {/* Why Choose EasyTrip Section - MOVED ABOVE DESTINATIONS */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
+            Why Choose EasyTrip
+          </h2>
+
+          {/* First Feature Box with Image - CHANGED FROM BLUE TO WHITE */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-8">
+            <div className="bg-white text-gray-800 p-8 rounded-lg shadow-lg h-[350px] border-l-4 border-yellow-400">
+              <h3 className="text-xl font-bold text-gray-800 mb-6">
+                EASYTRIP MAKES IT POSSIBLE
+              </h3>
+
+              <div className="space-y-3">
+                <div>
+                  <h4 className="font-bold text-base text-gray-800">Fast & Secure Booking</h4>
+                  <p className="text-sm">
+                    Book with confidence using our secure payment system and
+                    instant confirmation.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-base text-gray-800">Exclusive Member Discounts</h4>
+                  <p className="text-sm">
+                    Sign up today and unlock special savings on hotels, flights,
+                    and more.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-base text-gray-800">Eco-Friendly Travel</h4>
+                  <p className="text-sm">
+                    Book with confidence knowing we partner with sustainable and
+                    responsible travel providers.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-[350px] rounded-lg overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Luxury accommodation"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+          </div>
+
+          {/* Second Feature Box with Image - CHANGED FROM BLUE TO WHITE */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div className="h-[350px] rounded-lg overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Luxury villa"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+
+            <div className="bg-white text-gray-800 p-8 rounded-lg shadow-lg border-r-4 border-yellow-400">
+              <h3 className="text-xl font-bold text-gray-800 mb-6">
+                EASYTRIP MAKES IT POSSIBLE
+              </h3>
+
+              <div className="space-y-3">
+                {features.map((feature, index) => (
+                  <div key={index}>
+                    <h4 className="font-bold text-base text-gray-800">{feature.title}</h4>
+                    <p className="text-sm">{feature.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Destinations Section - NOW AFTER WHY CHOOSE SECTION */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
             Explore trending locations loved by our travelers
@@ -258,6 +385,7 @@ function LandingPage() {
                 country={dest.country}
                 price={dest.price}
                 nights={dest.nights}
+                image={dest.image}
               />
             ))}
           </div>
@@ -317,113 +445,52 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* Why Choose EasyTrip Section */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
-            Why Choose EasyTrip
-          </h2>
-
-          {/* First Feature Box with Image */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-8">
-            <div className="bg-[#333333] text-white p-8 rounded-lg h-[350px]">
-              <h3 className="text-2xl font-bold text-yellow-400 mb-6">
-                EASYTRIP MAKES IT POSSIBLE
-              </h3>
-
-              <div className="space-y-3">
-                <div>
-                  <h4 className="font-bold">Fast & Secure Booking</h4>
-                  <p className="text-sm">
-                    Book with confidence using our secure payment system and
-                    instant confirmation.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-bold">Exclusive Member Discounts</h4>
-                  <p className="text-sm">
-                    Sign up today and unlock special savings on hotels, flights,
-                    and more.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-bold">Eco-Friendly Travel</h4>
-                  <p className="text-sm">
-                    Book with confidence knowing we partner with sustainable and
-                    responsible travel providers.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="h-[350px] rounded-lg overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Luxury accommodation"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-          </div>
-
-          {/* Second Feature Box with Image */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-            <div className="h-[350px] rounded-lg overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Luxury villa"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-
-            <div className="bg-[#333333] text-white p-8 rounded-lg">
-              <h3 className="text-2xl font-bold text-yellow-400 mb-6">
-                EASYTRIP MAKES IT POSSIBLE
-              </h3>
-
-              <div className="space-y-3">
-                {features.map((feature, index) => (
-                  <div key={index}>
-                    <h4 className="font-bold">{feature.title}</h4>
-                    <p className="text-sm">{feature.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
+        {/* Testimonials Section  */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
             What our Travelers Say
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border border-blue-200 rounded-lg overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-lg overflow-hidden">
             {testimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={index}
-                name={testimonial.name}
-                title={testimonial.title}
-                review={testimonial.review}
-              />
+              <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div className="bg-yellow-400 h-2"></div>
+                <div className="p-6">
+                  <p className="text-sm text-gray-500 mb-2">{testimonial.name}</p>
+                  <h3 className="text-lg font-bold mb-3 text-gray-800">{testimonial.title}</h3>
+                  <p className="text-sm text-gray-700">{testimonial.review}</p>
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="mb-16 bg-[#333333] text-white p-8 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-yellow-400 mb-4 uppercase">
-            Ready to start your journey?
-          </h2>
-          <p className="text-base mb-6">
-            Join thousands of satisfied travelers who book with easy trip everyday
-          </p>
-          <button
-            className="bg-yellow-400 hover:bg-yellow-500 text-[#333333] font-bold px-6 py-2 rounded-full transition-colors duration-200"
-            onClick={() => navigate("/signup")}
-          >
-            SignUp Now
-          </button>
+        <section className="mb-16 relative overflow-hidden rounded-lg shadow-xl text-center">
+          {/* Background image */}
+          <img
+            src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+            alt="Mountain valley"
+            className="absolute w-full h-full object-cover"
+          />
+          
+          {/* Dark overlay with low opacity */}
+          <div className="absolute inset-0 bg-black opacity-60"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 p-10 text-white">
+            <h2 className="text-2xl font-bold text-white mb-4 uppercase">
+              Ready to start your journey?
+            </h2>
+            <p className="text-base mb-8">
+              Join thousands of satisfied travelers who book with EasyTrip everyday
+            </p>
+            <button
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold px-8 py-3 rounded-full transition-colors duration-200 text-base shadow-md"
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up Now
+            </button>
+          </div>
         </section>
       </div>
 
@@ -432,15 +499,15 @@ function LandingPage() {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-7 mb-6 px-35">
             <div>
-              <h3 className="text-xl font-bold text-yellow-400 mb-2">EasyTrip</h3>
-              <p className="text-base text-gray-300">
+              <h3 className="text-lg font-bold text-yellow-400 mb-2">EasyTrip</h3>
+              <p className="text-sm text-gray-300">
                 Making travel planning simple and accessible for everyone in
                 Nepal.
               </p>
             </div>
 
             <div>
-              <h3 className="text-x text-yellow-400 font-bold mb-2">
+              <h3 className="text-base text-yellow-400 font-bold mb-2">
                 Quick Links
               </h3>
               <ul className="space-y-1">
@@ -480,7 +547,7 @@ function LandingPage() {
             </div>
 
             <div>
-              <h3 className="text-x text-yellow-400 font-bold mb-2">
+              <h3 className="text-base text-yellow-400 font-bold mb-2">
                 Contact Us
               </h3>
               <ul className="space-y-1">
@@ -497,7 +564,7 @@ function LandingPage() {
             </div>
 
             <div>
-              <h3 className="text-x text-yellow-400 font-bold mb-2">
+              <h3 className="text-base text-yellow-400 font-bold mb-2">
                 Follow Us
               </h3>
               <div className="flex space-x-4">
