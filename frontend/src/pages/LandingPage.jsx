@@ -2,12 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import SearchBox from "./Searchbox";
+import { useEffect } from "react";
+import { useguesthouseStore } from "../store/guesthouseStore";
+import { useUserStore } from "../store/userStore";
 
 // Updated Travel Card Component with Images
 const TravelCard = ({ location, country, price, nights, image }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      <a href={`/destination/${location.toLowerCase().replace(/\s+/g, '-')}`}>
+      <a href={`/destination/${location.toLowerCase().replace(/\s+/g, "-")}`}>
         <img
           src={image}
           alt={`${location}, ${country}`}
@@ -35,7 +38,7 @@ const TravelCard = ({ location, country, price, nights, image }) => {
 };
 
 // Travel Agent Card Component
-const AgentCard = ({ name, role, image }) => {
+const AgentCard = ({ name, role, image, email }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       <div className="flex justify-center mb-3">
@@ -50,27 +53,26 @@ const AgentCard = ({ name, role, image }) => {
       <div className="flex justify-center space-x-2">
         <button
           className="bg-[#555555] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
-          onClick={() => console.log(`Contact clicked for ${name}`)}
+          onClick={() => window.open(`mailto:${email}`)}
         >
           Contact
         </button>
-        <button
+        {/* <button
           className="bg-transparent hover:bg-yellow-400 hover:text-[#333333] border border-[#555555] text-[#555555] px-3 py-1 text-sm rounded transition-colors duration-200"
           onClick={() => console.log(`View profile clicked for ${name}`)}
         >
           View Profile
-        </button>
+        </button> */}
       </div>
     </div>
   );
 };
 
-
 // Guesthouse Card Component
 const GuesthouseCard = ({ name, location, price, image }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      <a href={`/guesthouse/${name.toLowerCase().replace(/\s+/g, '-')}`}>
+      <a href={`/guesthouse/${name.toLowerCase().replace(/\s+/g, "-")}`}>
         <img
           src={image}
           alt={name}
@@ -81,12 +83,6 @@ const GuesthouseCard = ({ name, location, price, image }) => {
         <h3 className="text-lg font-bold text-gray-800 mb-1">{name}</h3>
         <p className="text-sm text-gray-600 mb-3">{location}</p>
         <div className="flex justify-between items-center">
-          <button
-            className="bg-[#333333] hover:bg-yellow-400 hover:text-[#333333] text-white px-3 py-1 text-sm rounded transition-colors duration-200"
-            onClick={() => console.log(`Book Now clicked for ${name}`)}
-          >
-            Book Now
-          </button>
           <span className="text-sm text-yellow-600">${price}/night</span>
         </div>
       </div>
@@ -118,42 +114,58 @@ const FeatureItem = ({ title, description }) => {
 function LandingPage() {
   const navigate = useNavigate();
 
+  const { fetchGuesthouses, guesthouses } = useguesthouseStore();
+  const { fetchUsers, users } = useUserStore();
+
+  useEffect(() => {
+    fetchGuesthouses();
+    fetchUsers();
+  }, [fetchGuesthouses, fetchUsers]);
+
+  console.log(guesthouses);
+  const agents = users.filter((user) => user.role === "travel agent");
+
   // Updated Destinations data with images
   const destinations = [
-    { 
-      location: "Pokhara", 
-      country: "Nepal", 
-      price: "899", 
+    {
+      location: "Pokhara",
+      country: "Nepal",
+      price: "899",
       nights: "7",
-      image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      image:
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
-    { 
-      location: "Kathmandu", 
-      country: "Nepal", 
-      price: "799", 
+    {
+      location: "Kathmandu",
+      country: "Nepal",
+      price: "799",
       nights: "5",
-      image: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      image:
+        "https://images.unsplash.com/photo-1605640840605-14ac1855827b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
-    { 
-      location: "Chitwan", 
-      country: "Nepal", 
-      price: "699", 
+    {
+      location: "Chitwan",
+      country: "Nepal",
+      price: "699",
       nights: "4",
-      image: "https://cdn.kimkim.com/files/a/content_articles/featured_photos/539be48117e7eb2f74ba27da8f2f5add48787a19/medium-3045f129d612b5f415832b5958809be3.jpg"
+      image:
+        "https://cdn.kimkim.com/files/a/content_articles/featured_photos/539be48117e7eb2f74ba27da8f2f5add48787a19/medium-3045f129d612b5f415832b5958809be3.jpg",
     },
-    { 
-      location: "Lumbini", 
-      country: "Nepal", 
-      price: "599", 
+    {
+      location: "Lumbini",
+      country: "Nepal",
+      price: "599",
       nights: "3",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSZ-sTZ0TbKEcityxP1Z0tpOxzYqgwi7G4RQ&s"
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSZ-sTZ0TbKEcityxP1Z0tpOxzYqgwi7G4RQ&s",
     },
-    { 
-      location: "Nagarkot", 
-      country: "Nepal", 
-      price: "499", 
+    {
+      location: "Nagarkot",
+      country: "Nepal",
+      price: "499",
       nights: "2",
-      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/87/5f/c3/caption.jpg?w=300&h=300&s=1"
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/87/5f/c3/caption.jpg?w=300&h=300&s=1",
     },
   ];
 
@@ -198,71 +210,74 @@ function LandingPage() {
   ];
 
   // Travel agents data
-const agents = [
-  {
-    name: "Lakpa Sherpa",
-    role: "Trekking Expert",
-    image: "https://randomuser.me/api/portraits/men/51.jpg",
-  },
-  {
-    name: "Ramesh Poudel",
-    role: "Trekking Expert",
-    image: "https://randomuser.me/api/portraits/men/52.jpg",
-  },
-  {
-    name: "Lesang Rai",
-    role: "Trekking Expert",
-    image: "https://randomuser.me/api/portraits/men/53.jpg",
-  },
-  {
-    name: "Bishow Thapa",
-    role: "Trekking Expert",
-    image: "https://plus.unsplash.com/premium_photo-1665203644093-b3b8ebfa4cb3?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwaGlraW5nfGVufDB8fDB8fHww",
-  },
-  {
-    name: "Pemba Thapa",
-    role: "Trekking Expert",
-    image: "https://randomuser.me/api/portraits/men/55.jpg",
-  },
-];
-
+  // const agents = [
+  //   {
+  //     name: "Lakpa Sherpa",
+  //     role: "Trekking Expert",
+  //     image: "https://randomuser.me/api/portraits/men/51.jpg",
+  //   },
+  //   {
+  //     name: "Ramesh Poudel",
+  //     role: "Trekking Expert",
+  //     image: "https://randomuser.me/api/portraits/men/52.jpg",
+  //   },
+  //   {
+  //     name: "Lesang Rai",
+  //     role: "Trekking Expert",
+  //     image: "https://randomuser.me/api/portraits/men/53.jpg",
+  //   },
+  //   {
+  //     name: "Bishow Thapa",
+  //     role: "Trekking Expert",
+  //     image:
+  //       "https://plus.unsplash.com/premium_photo-1665203644093-b3b8ebfa4cb3?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwaGlraW5nfGVufDB8fDB8fHww",
+  //   },
+  //   {
+  //     name: "Pemba Thapa",
+  //     role: "Trekking Expert",
+  //     image: "https://randomuser.me/api/portraits/men/55.jpg",
+  //   },
+  // ];
 
   // Guesthouses data
-  const guesthouses = [
-    { 
-      name: "Mountain View Lodge", 
-      location: "Pokhara, Nepal", 
-      price: "30",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    { 
-      name: "Himalayan Horizon Lodge", 
-      location: "Nagarkot, Nepal", 
-      price: "40",
-      image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    { 
-      name: "Everest Base Guesthouse", 
-      location: "Lukla, Nepal", 
-      price: "55",
-      image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    { 
-      name: "Peaceful Stupa Retreat", 
-      location: "Lumbini, Nepal", 
-      price: "35",
-      image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    { 
-      name: "Thamel Travelers Inn", 
-      location: "Kathmandu, Nepal", 
-      price: "30",
-      image: "https://images.unsplash.com/photo-1545158535-c3f7168c28b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    }
-  ];
+  // const guesthouses = [
+  //   {
+  //     name: "Mountain View Lodge",
+  //     location: "Pokhara, Nepal",
+  //     price: "30",
+  //     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Himalayan Horizon Lodge",
+  //     location: "Nagarkot, Nepal",
+  //     price: "40",
+  //     image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Everest Base Guesthouse",
+  //     location: "Lukla, Nepal",
+  //     price: "55",
+  //     image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Peaceful Stupa Retreat",
+  //     location: "Lumbini, Nepal",
+  //     price: "35",
+  //     image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Thamel Travelers Inn",
+  //     location: "Kathmandu, Nepal",
+  //     price: "30",
+  //     image: "https://images.unsplash.com/photo-1545158535-c3f7168c28b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  //   }
+  // ];
 
   return (
-    <div className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden" style={{fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif"}}>
+    <div
+      className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden"
+      style={{ fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}
+    >
       <Navbar />
 
       {/* Hero Image with Search Box */}
@@ -311,7 +326,9 @@ const agents = [
 
               <div className="space-y-3">
                 <div>
-                  <h4 className="font-bold text-base text-gray-800">Fast & Secure Booking</h4>
+                  <h4 className="font-bold text-base text-gray-800">
+                    Fast & Secure Booking
+                  </h4>
                   <p className="text-sm">
                     Book with confidence using our secure payment system and
                     instant confirmation.
@@ -319,7 +336,9 @@ const agents = [
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-base text-gray-800">Exclusive Member Discounts</h4>
+                  <h4 className="font-bold text-base text-gray-800">
+                    Exclusive Member Discounts
+                  </h4>
                   <p className="text-sm">
                     Sign up today and unlock special savings on hotels, flights,
                     and more.
@@ -327,7 +346,9 @@ const agents = [
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-base text-gray-800">Eco-Friendly Travel</h4>
+                  <h4 className="font-bold text-base text-gray-800">
+                    Eco-Friendly Travel
+                  </h4>
                   <p className="text-sm">
                     Book with confidence knowing we partner with sustainable and
                     responsible travel providers.
@@ -363,7 +384,9 @@ const agents = [
               <div className="space-y-3">
                 {features.map((feature, index) => (
                   <div key={index}>
-                    <h4 className="font-bold text-base text-gray-800">{feature.title}</h4>
+                    <h4 className="font-bold text-base text-gray-800">
+                      {feature.title}
+                    </h4>
                     <p className="text-sm">{feature.description}</p>
                   </div>
                 ))}
@@ -373,7 +396,7 @@ const agents = [
         </section>
 
         {/* Destinations Section - NOW AFTER WHY CHOOSE SECTION */}
-        <section className="mb-16">
+        {/* <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
             Explore trending locations loved by our travelers
           </h2>
@@ -397,7 +420,7 @@ const agents = [
               View All »
             </button>
           </div>
-        </section>
+        </section> */}
 
         {/* Travel Agents Section */}
         <section className="mb-16">
@@ -406,16 +429,25 @@ const agents = [
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {agents.map((agent, index) => (
-              <AgentCard key={index} name={agent.name} role={agent.role} />
+              <AgentCard
+                key={index}
+                name={agent.name}
+                role={agent.role}
+                image={
+                  agent.profileImage ||
+                  "https://thumbs.dreamstime.com/b/travel-agent-design-vector-illustration-47489074.jpg"
+                }
+                email={agent.email}
+              />
             ))}
           </div>
           <div className="text-right mt-2">
-            <button
+            {/* <button
               className="text-blue-600 hover:text-yellow-400 text-sm transition-colors duration-200"
               onClick={() => console.log("View all agents clicked")}
             >
               View All »
-            </button>
+            </button> */}
           </div>
         </section>
 
@@ -430,15 +462,15 @@ const agents = [
                 key={index}
                 name={guesthouse.name}
                 location={guesthouse.location}
-                price={guesthouse.price}
-                image={guesthouse.image}
+                price={guesthouse?.pricePerNight}
+                image={guesthouse?.images[0]}
               />
             ))}
           </div>
           <div className="text-right mt-2">
             <button
               className="text-blue-600 hover:text-yellow-400 text-sm transition-colors duration-200"
-              onClick={() => console.log("View all guesthouses clicked")}
+              onClick={() => navigate("/results")}
             >
               View All »
             </button>
@@ -452,11 +484,18 @@ const agents = [
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-lg overflow-hidden">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+              <div
+                key={index}
+                className="bg-white shadow-lg rounded-lg overflow-hidden"
+              >
                 <div className="bg-yellow-400 h-2"></div>
                 <div className="p-6">
-                  <p className="text-sm text-gray-500 mb-2">{testimonial.name}</p>
-                  <h3 className="text-lg font-bold mb-3 text-gray-800">{testimonial.title}</h3>
+                  <p className="text-sm text-gray-500 mb-2">
+                    {testimonial.name}
+                  </p>
+                  <h3 className="text-lg font-bold mb-3 text-gray-800">
+                    {testimonial.title}
+                  </h3>
                   <p className="text-sm text-gray-700">{testimonial.review}</p>
                 </div>
               </div>
@@ -472,17 +511,18 @@ const agents = [
             alt="Mountain valley"
             className="absolute w-full h-full object-cover"
           />
-          
+
           {/* Dark overlay with low opacity */}
           <div className="absolute inset-0 bg-black opacity-60"></div>
-          
+
           {/* Content */}
           <div className="relative z-10 p-10 text-white">
             <h2 className="text-2xl font-bold text-white mb-4 uppercase">
               Ready to start your journey?
             </h2>
             <p className="text-base mb-8">
-              Join thousands of satisfied travelers who book with EasyTrip everyday
+              Join thousands of satisfied travelers who book with EasyTrip
+              everyday
             </p>
             <button
               className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold px-8 py-3 rounded-full transition-colors duration-200 text-base shadow-md"
@@ -499,7 +539,9 @@ const agents = [
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-7 mb-6 px-35">
             <div>
-              <h3 className="text-lg font-bold text-yellow-400 mb-2">EasyTrip</h3>
+              <h3 className="text-lg font-bold text-yellow-400 mb-2">
+                EasyTrip
+              </h3>
               <p className="text-sm text-gray-300">
                 Making travel planning simple and accessible for everyone in
                 Nepal.

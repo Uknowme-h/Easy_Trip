@@ -42,7 +42,7 @@ app.post("/webhooks/bus", (req, res, next) => {
 }, handleStripeWebhook);
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://easy-trip-smoky.vercel.app"],
+    origin: ["http://localhost:5173", "https://easy-trip-smoky.vercel.app", "https://hcbg9s40-5173.inc1.devtunnels.ms"],
     credentials: true
 }));
 

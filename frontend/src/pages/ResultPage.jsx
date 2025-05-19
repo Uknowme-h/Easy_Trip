@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SearchBox from "./Searchbox";
 import { useAuthStore } from "../store/authStore";
 import axios from "axios";
@@ -8,15 +8,43 @@ import toast from "react-hot-toast";
 const ResultPage = () => {
   const location = useLocation();
   const { results, allGuesthouses } = location.state || {};
-  const guesthousesToShow = results ?? allGuesthouses ?? [];
   const { user, isAuthenticated } = useAuthStore();
 
-  console.log(user);
-
+  const [guesthousesToShow, setGuesthousesToShow] = useState([]);
+  const [allGuesthousesState, setAllGuesthousesState] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGuesthouse, setSelectedGuesthouse] = useState(null);
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
+
+  // Fetch all guesthouses on mount if not provided via location.state
+  useEffect(() => {
+    const fetchGuesthouses = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/guesthouses");
+        setAllGuesthousesState(res.data || []);
+        setGuesthousesToShow(res.data || []);
+      } catch (error) {
+        toast.error("Failed to load guesthouses.");
+      }
+    };
+
+    if (allGuesthouses) {
+      setAllGuesthousesState(allGuesthouses);
+      setGuesthousesToShow(allGuesthouses);
+    } else {
+      fetchGuesthouses();
+    }
+  }, [allGuesthouses]);
+
+  // Show search results if present, else show all guesthouses
+  useEffect(() => {
+    if (results) {
+      setGuesthousesToShow(results);
+    } else if (allGuesthouses) {
+      setGuesthousesToShow(allGuesthouses);
+    }
+  }, [results, allGuesthouses]);
 
   const openModal = (guesthouse) => {
     setSelectedGuesthouse(guesthouse);
@@ -47,13 +75,11 @@ const ResultPage = () => {
           userId: user?._id,
           checkInDate,
           checkOutDate,
-          guests: 1, // you can adjust this as needed or make it a field in the form
+          guests: 1,
         }
       );
-      console.log("Checkout session created:", res.data);
-      window.location.href = res.data.url; // Redirect to Stripe checkout
+      window.location.href = res.data.url;
     } catch (error) {
-      console.error("Error creating checkout session:", error);
       toast.error(error.response?.data?.message || "Error creating booking");
     }
   };

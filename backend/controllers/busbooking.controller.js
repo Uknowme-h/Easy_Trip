@@ -72,7 +72,7 @@ export const getBookingsByOperator = async (req, res) => {
         const buses = await Bus.find({ operator: operatorId });
 
 
-        // Extract the bus IDs
+        // Extract the bus ID
         const busIds = buses.map(bus => bus._id);
 
 

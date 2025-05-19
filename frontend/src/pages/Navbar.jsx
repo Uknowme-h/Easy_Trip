@@ -60,7 +60,7 @@ const Navbar = () => {
           <div className="space-x-4">
             <button
               className="px-4 py-2 text-white hover:text-yellow-400 transition-colors"
-              onClick={() => navigate("/guesthouse")}
+              onClick={() => navigate("/results")}
             >
               GuestHouses
             </button>
