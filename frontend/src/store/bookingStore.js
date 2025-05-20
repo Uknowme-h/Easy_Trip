@@ -40,7 +40,7 @@ const useBookingStore = create((set, get) => ({
     createBooking: async (data) => {
         try {
             set({ loading: true, error: null });
-            const response = await axios.post("http://localhost:5000/api/booking", data);
+            const response = await axios.post(baseURL + "/api/booking", data);
             set((state) => ({
                 bookings: [...state.bookings, response.data],
             }));
@@ -55,7 +55,7 @@ const useBookingStore = create((set, get) => ({
     getUserBookings: async (userId) => {
         try {
             set({ loading: true, error: null });
-            const response = await axios.get(`http://localhost:5000/api/booking/user/${userId}`);
+            const response = await axios.get(`${baseURL}/api/booking/user/${userId}`);
             set({ userBookings: response.data });
         } catch (error) {
             set({ error: error.response?.data?.message || error.message });
@@ -68,7 +68,7 @@ const useBookingStore = create((set, get) => ({
     getOwnerBookings: async (ownerId) => {
         try {
             set({ loading: true, error: null });
-            const response = await axios.get(`http://localhost:5000/api/booking/owner/${ownerId}`);
+            const response = await axios.get(`${baseURL}/api/booking/owner/${ownerId}`);
             set({ ownerBookings: response.data });
         } catch (error) {
             set({ error: error.response?.data?.message || error.message });
@@ -81,7 +81,7 @@ const useBookingStore = create((set, get) => ({
     cancelBooking: async (bookingId) => {
         try {
             set({ loading: true, error: null });
-            const response = await axios.patch(`http://localhost:5000/api/booking/cancel/${bookingId}`);
+            const response = await axios.patch(`${baseURL}/api/booking/cancel/${bookingId}`);
             set((state) => ({
                 bookings: state.bookings.map((booking) =>
                     booking._id === bookingId ? response.data.booking : booking
