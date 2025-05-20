@@ -24,9 +24,6 @@ const MainDash = ({ users }) => {
               {users.filter((user) => user.role === "bus operator").length}{" "}
               active operators
             </p>
-            <button className="mt-4 px-4 py-2 bg-green-700 text-white rounded">
-              View
-            </button>
           </div>
           {/* Card 2 */}
           <div className="bg-gray-100 p-4 rounded shadow">
@@ -38,9 +35,6 @@ const MainDash = ({ users }) => {
               {users.filter((user) => user.role === "travel agent").length}{" "}
               verified agents
             </p>
-            <button className="mt-4 px-4 py-2 bg-green-700 text-white rounded">
-              View
-            </button>
           </div>
           {/* Card 3 */}
           <div className="bg-gray-100 p-4 rounded shadow">
@@ -52,9 +46,6 @@ const MainDash = ({ users }) => {
               {users.filter((user) => user.role === "traveler").length}{" "}
               registered users
             </p>
-            <button className="mt-4 px-4 py-2 bg-green-700 text-white rounded">
-              View
-            </button>
           </div>
           {/* Card 4 */}
           <div className="bg-gray-100 p-4 rounded shadow">
@@ -66,9 +57,6 @@ const MainDash = ({ users }) => {
               {users.filter((user) => user.role === "guesthouse owner").length}{" "}
               registered users
             </p>
-            <button className="mt-4 px-4 py-2 bg-green-700 text-white rounded">
-              View
-            </button>
           </div>
         </div>
       </section>
