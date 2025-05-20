@@ -278,8 +278,6 @@ function LandingPage() {
       className="font-sans min-h-screen w-full bg-gray-100 overflow-x-hidden"
       style={{ fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}
     >
-      <Navbar />
-
       {/* Hero Image with Search Box */}
       <div className="relative w-full h-[600px] overflow-hidden">
         {/* Search box positioned above the hero image content */}
