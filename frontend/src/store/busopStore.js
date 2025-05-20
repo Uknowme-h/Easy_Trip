@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:5000'; // Set your API base URL here
+axios.defaults.baseURL = 'https://hcbg9s40-5000.inc1.devtunnels.ms'; // Set your API base URL here
 const useBusOperatorStore = create((set) => ({
     busOperators: [],
     busOperator: [],

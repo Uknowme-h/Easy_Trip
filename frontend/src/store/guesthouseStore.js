@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/guesthouses" : "http://localhost:5000/api/guesthouses";
+const API_URL = import.meta.env.MODE === "development" ? "https://hcbg9s40-5000.inc1.devtunnels.ms/api/guesthouses" : "https://hcbg9s40-5000.inc1.devtunnels.ms/api/guesthouses";
 axios.defaults.withCredentials = true;
 export const useguesthouseStore = create((set, get) => ({
     guesthouses: [],

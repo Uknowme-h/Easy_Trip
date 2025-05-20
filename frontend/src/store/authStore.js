@@ -2,8 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "http://localhost:5000/api/auth";
-const CLOUD_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/upload" : "/api/upload";
+const API_URL = import.meta.env.MODE === "development" ? "https://hcbg9s40-5000.inc1.devtunnels.ms/api/auth" : "https://hcbg9s40-5000.inc1.devtunnels.ms/api/auth";
+const CLOUD_URL = import.meta.env.MODE === "development" ? "https://hcbg9s40-5000.inc1.devtunnels.ms/api/upload" : "/api/upload";
 
 
 axios.defaults.withCredentials = true;

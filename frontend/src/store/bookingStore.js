@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const baseURL = "http://localhost:5000"; // Set your API base URL here
+const baseURL = "https://hcbg9s40-5000.inc1.devtunnels.ms"; // Set your API base URL here
 
 const useBookingStore = create((set, get) => ({
     bookings: [],
