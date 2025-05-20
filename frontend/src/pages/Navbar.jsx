@@ -72,7 +72,7 @@ const Navbar = () => {
             </button>
             <button
               className="px-4 py-2 text-white rounded hover:text-yellow-400 transition-colors"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/agent")}
             >
               Travel Guides
             </button>
